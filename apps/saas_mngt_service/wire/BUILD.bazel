@@ -3,12 +3,12 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "wire",
     srcs = ["wire_gen.go"],
-    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/wire",
+    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/wire",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/core:system",
-        "//internal/libs/redis",
-        "//internal/libs/viper",
-        "//internal/libs/zap",
+        "//libs/redis",
+        "//libs/viper",
+        "//libs/zap",
     ],
 )

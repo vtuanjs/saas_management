@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "zap",
     srcs = ["zap.go"],
-    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/libs/zap",
+    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/libs/zap",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/core:system",

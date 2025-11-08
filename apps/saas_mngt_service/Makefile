@@ -1,5 +1,4 @@
 .EXPORT_ALL_VARIABLES:
-
 DOCKER_BUILDKIT=1
 COMPOSE_DOCKER_CLI_BUILD=1
 COMPOSE_IGNORE_PULL_FAILURES=1
@@ -9,6 +8,9 @@ BUF_TOKEN ?= $(shell test -f ../../secrets/buf_token && cat ../../secrets/buf_to
 MAKEFLAGS += --no-print-directory
 SOPS_PGP_FP = $(shell cat ../../secrets/sops_public_key)
 TOOL ?=
+DEBUG ?=
+
+.PHONY: setup buf-update buf-gen buf-lint buf-breaking env-decrypt env-encrypt build up down debug check migrate-up migrate-down migrate-add migrate-remove migrate-status migrate-hash migrate-gen migrate-rebase ad-hoc-up ad-hoc-down ad-hoc-add seed-up seed-add seed-down mod-tidy wire %
 
 setup:
 	@chmod +x ./*.sh
@@ -27,6 +29,15 @@ buf-lint:
 buf-breaking:
 	buf breaking --against "../../.git#branch=develop,subdir=proto"
 
+# gen wire + mock
+gen:
+	@echo "Generating wire..."
+	wire ./wire
+	@echo "Generating mocks..."
+	go generate ./internal/...
+	@echo "Build after code generation..."
+	make build
+
 # env
 env-decrypt:
 	export SOPS_PGP_FP=$(SOPS_PGP_FP)
@@ -38,6 +49,7 @@ env-encrypt:
 
 # bazel
 build:
+	@echo "Building..."
 	TOOL=BUILD docker compose up saas_mngt_service --remove-orphans
 
 up:
@@ -51,11 +63,6 @@ down:
 debug:
 	@echo "Running in debug mode..."
 	DEBUG=true docker compose up saas_mngt_service
-
-# git
-commit:
-	@echo "Committing changes..."
-	@bash ./commit.sh
 
 # golangci-lint
 check:
@@ -118,15 +125,6 @@ seed-add:
 seed-down:
 	@echo "Running seed migrate down..."
 	@TOOL=SEED_DOWN docker compose up saas_mngt_service_tool
-
-#### FAST GEN - You can use "make gen" instead if you lazy ####
-mod-tidy:
-	@echo "Running go mod tidy..."
-	TOOL=MOD_TIDY docker compose up saas_mngt_service_tool
-
-wire:
-	@echo "Generating wire..."
-	wire ./internal/wire
 
 %:
 	@:

@@ -1,1 +1,0 @@
-Kafka consumer from another service topic

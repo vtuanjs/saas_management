@@ -20,6 +20,7 @@ setup:
 	@echo "Initializing shared networks"
 	@docker network create --driver=bridge local-monorepo || echo "Network 'local-monorepo' already exists - skipping creation"
 	@echo "Changing file permissions..."
+	chmod +x ./commit.sh
 	make -C ./apps/saas_mngt_service setup
 
 # infrastructure

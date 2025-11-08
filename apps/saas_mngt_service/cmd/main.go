@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/wire"
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/wire"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
