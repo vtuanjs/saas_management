@@ -12,7 +12,7 @@ DEBUG ?= false
 MAKEFLAGS += --no-print-directory
 SOPS_PGP_FP = 49031300F4AF150110DCECAD347C46C2BFE6D611
 
-init:
+setup:
 	@chmod +x ./*.sh
 	@chmod +x ./scripts/*.sh
 

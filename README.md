@@ -7,26 +7,25 @@
 Link: https://docs.docker.com/get-started/get-docker/
 
 2. Install Make
-
-You need to install `Make`:
-
-- For Mac: https://formulae.brew.sh/formula/make
-- For Ubuntu:
-```
-sudo apt update
-sudo apt install make
-```
+- For Mac: `brew install make`
+- For Ubuntu: `sudo apt install make`
 - For Windows: Please search online for installation instructions
 
-3. Ask your teammate to download the `sops` folder
+3. Install gpg (gnupg): using for encrypt/decrypt env
+- For Mac: `brew install gpg`
+- For Ubuntu: `sudo apt install gnupg`
+- For Windows: Please search online for installation instructions
 
-In this folder, you will find private_key.asc.
+3. Look folder `secrets` at root, it include two file
+- buf_token: Buf have rate limit to get plugin from remote. If you hit a rate limit, you need to register account and create token via url https://buf.build/ to by pass i
 
-This key is used to encrypt/decrypt .env files.
+e.g: a5757d9dc362757a87854da2ae88bcdcd4da60f7ff3bd4786830926ea88ef787
 
-4. Initialize Docker images and network
+- sops_private_key.asc: Ask your team mate to get this file. If you don't care about security env, just use my private key in the folder
 
-`make init`
+4. Install requirement Go tool and setup permission
+
+`make setup`
 
 ### Running
 
