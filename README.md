@@ -1,86 +1,112 @@
-# README
+# SaaS Management Platform
 
-### Setup Project
+This document provides instructions for setting up, running, and managing the project.
 
-1. Install Docker & Docker Compose
+## Project Setup
 
-Link: https://docs.docker.com/get-started/get-docker/
+### 1. Prerequisites
 
-2. Install Make
-- For Mac: `brew install make`
-- For Ubuntu: `sudo apt install make`
-- For Windows: Please search online for installation instructions
+First, install the required tools for your operating system.
 
-3. Install gpg (gnupg): using for encrypt/decrypt env
-- For Mac: `brew install gpg`
-- For Ubuntu: `sudo apt install gnupg`
-- For Windows: Please search online for installation instructions
+-   **Docker & Docker Compose**
+	-   [Installation Guide](https://docs.docker.com/get-started/get-docker/)
 
-3. Look folder `secrets` at root, it include 3 files
-- buf_token: Buf have rate limit to get plugin from remote. If you hit a rate limit, you need to register account and create token via url https://buf.build/ to by pass i
+-   **GNU Make**
+	-   **macOS:** `brew install make`
+	-   **Ubuntu:** `sudo apt install make`
+	-   **Windows:** Follow online installation guides.
 
-e.g: a5757d9dc362757a87854da2ae88bcdcd4da60f7ff3bd4786830926ea88ef787
+-   **GnuPG (gpg)**: Used for encrypting/decrypting environment variables.
+	-   **macOS:** `brew install gpg`
+	-   **Ubuntu:** `sudo apt install gnupg`
+	-   **Windows:** Follow online installation guides.
 
-- sops_private_key.asc:
+### 2. Secrets Configuration
 
-We are using https://github.com/getsops/sops to encrypt/decrypt env key. We need private key to do it. Ask your team mate to get private key file. If you don't care about security env, just use my private key first in the folder.
+The `secrets` directory at the project root contains the following files:
 
-- sops_public_key
+-   `buf_token`: Buf has a rate limit for fetching remote plugins. If you encounter this limit, register for an account at [buf.build](https://buf.build/) and create a token to bypass it.
+	-   *Example:* `a5757d9dc362757a87854da2ae88bcdcd4da60f7ff3bd4786830926ea88ef787`
+-   `sops_private_key.asc`: This project uses [sops](https://github.com/getsops/sops) to manage encrypted environment variables. You need a private key for decryption. Obtain this from a team member. A sample key is provided for initial setup.
+-   `sops_public_key`: The public key corresponding to the private key, used for encryption.
 
-4. Install requirement Go tool and setup permission
+### 3. Install Dependencies
 
-`make setup`
+Install Go tools and set up necessary permissions by running:
 
-### Running
+```sh
+make setup
+```
 
-- Run all services: `make up-all`
-- Stop all services: `make down-all`
-- Gen file (mod tidy + wire + mock + proto + ent + build): `make gen`
+## Development
 
-See more commands in the Makefile.
+### Running the Application
 
-### Generating
-#### With Golang Project
-- Generate mock file
-You need to add
+-   **Start all services:** `make up-all`
+-   **Stop all services:** `make down-all`
+-   **Generate all files** (tidy, wire, mock, proto, ent): `make gen`
+
+See the `Makefile` for a complete list of commands.
+
+### Generating Code
+
+#### Go Mocks
+
+To generate mock files for an interface, add the following `go:generate` directive to your Go source file:
+
+```go
 //go:generate sh -c "mockgen -source=$GOFILE -destination=mock/$(basename $GOFILE .go)_test.go -package=mock"
-
-### Managing Your ENV
-
-The .env file is automatically created when you run the app, with values from .env.enc
-
-If you need to change your .env, you must synchronize it to .env.enc to ensure you don't lose newly added values. Run `make <your_service>-gen-env-enc`. For example: `make saas-mgmt-gen-env-enc`
-
-### Create new app
-You need to run: `bash .template/init_app_go.sh` and following instruction
-
-### Note
-
-In a real project, the `sops` folder MUST be added to .gitignore.
-
-We don't want to store it in the codebase.
-
-### GO TO PRODUCTION NOTE
-
-In production, we don't use `sops`, we just inject env directly from secret to environment.
-
-## Useful setup
-
-### Generate sops secret and private key
-Use can generate private by using this command:
-```
-gpg --full-generate-key
-
-Choose RSA
-Use 4096
-Skip generate password
 ```
 
-You can see a public key, like: `49031300F4AF150110DCECAD347C46C2BFE6D611`
+### Managing Environment Variables
 
-Next, you need to export private key
-`gpg --armor --export-secret-keys 49031300F4AF150110DCECAD347C46C2BFE6D611 > sops_private_key.asc`
+The `.env` file is automatically created from the encrypted `.env.enc` file when you run the application.
 
-Finally, create two file in secrets folder to store them:
-- sops_private_key.asc
-- sops_public_key
+To update environment variables, modify your local `.env` file and then synchronize the changes back to the encrypted file. This prevents losing newly added values.
+
+```sh
+# Replace <your_service> with the actual service name
+make <your_service>-gen-env-enc
+```
+
+For example: `make saas-mgmt-gen-env-enc`
+
+### Creating a New Application
+
+To scaffold a new application within the project, run the following script and follow the prompts:
+
+```sh
+bash .template/init_app_go.sh
+```
+
+## Important Notes
+
+### Security
+
+In a real-world project, the `secrets` directory **MUST** be added to `.gitignore`. Private keys and other secrets should never be committed to the codebase.
+
+### Production Environment
+
+In production, environment variables are injected directly from a secret management service (e.g., AWS Secrets Manager, HashiCorp Vault). `sops` is used for local development only.
+
+## Appendix: Useful Commands
+
+### Generating a New `sops` Keypair
+
+1.  Generate a new GPG key:
+	```sh
+	gpg --full-generate-key
+	```
+	-   Choose `(1) RSA and RSA`.
+	-   Set key size to `4096`.
+	-   Set an expiration or choose `0` for no expiration.
+	-   Provide your user information and skip the passphrase.
+
+2.  Note the public key fingerprint from the output (e.g., `49031300F4AF150110DCECAD347C46C2BFE6D611`).
+
+3.  Export the private key:
+	```sh
+	gpg --armor --export-secret-keys YOUR_PUBLIC_KEY_FINGERPRINT > sops_private_key.asc
+	```
+
+4.  Place the generated `sops_private_key.asc` in the `secrets` directory and update `sops_public_key` with the fingerprint.
