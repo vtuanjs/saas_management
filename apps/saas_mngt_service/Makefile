@@ -6,11 +6,8 @@ COMPOSE_IGNORE_PULL_FAILURES=1
 ENV=local
 GO_VERSION ?= "1.24.5"
 BUF_TOKEN ?= $(shell test -f ../../secrets/buf_token && cat ../../secrets/buf_token || echo "")
-SCHEMA ?= 
-TOOL ?=
-DEBUG ?= false
 MAKEFLAGS += --no-print-directory
-SOPS_PGP_FP = 49031300F4AF150110DCECAD347C46C2BFE6D611
+SOPS_PGP_FP = $(shell cat ../../secrets/sops_public_key)
 
 setup:
 	@chmod +x ./*.sh
@@ -31,9 +28,11 @@ buf-breaking:
 
 # env
 env-decrypt:
+	export SOPS_PGP_FP=$(SOPS_PGP_FP)
 	sops decrypt --input-type dotenv --output-type dotenv .env.enc > .env
 
 env-encrypt:
+	export SOPS_PGP_FP=$(SOPS_PGP_FP)
 	sops encrypt --input-type dotenv --output-type dotenv .env > .env.enc
 
 # bazel

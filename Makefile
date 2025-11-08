@@ -3,14 +3,10 @@
 DOCKER_BUILDKIT=1
 COMPOSE_DOCKER_CLI_BUILD=1
 COMPOSE_IGNORE_PULL_FAILURES=1
-ENV=local
 GO_VERSION ?= "1.24.5"
-BUF_TOKEN ?= $(shell test -f ./tools/buf/buf_token && cat ./tools/buf/buf_token || echo "")
-SCHEMA ?= 
-TOOL ?=
-DEBUG ?= false
+BUF_TOKEN ?= $(shell test -f ./secrets/buf_token && cat ./secrets/buf_token || echo "")
 MAKEFLAGS += --no-print-directory
-SOPS_PGP_FP = 49031300F4AF150110DCECAD347C46C2BFE6D611
+SOPS_PGP_FP = $(shell cat ./secrets/sops_public_key)
 
 setup:
 	@echo "Installing required Go tools..."
