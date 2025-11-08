@@ -1,0 +1,39 @@
+package viper
+
+import (
+	"fmt"
+	"sync"
+
+	system "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/core"
+
+	"github.com/spf13/viper"
+)
+
+var (
+	singleton *system.Config
+	once      sync.Once
+)
+
+func NewConfig() *system.Config {
+	once.Do(func() {
+		v := viper.New()
+		v.SetConfigName(".env")
+		v.SetConfigType("env")
+		v.AddConfigPath(".")
+		v.AutomaticEnv()
+
+		if err := v.ReadInConfig(); err != nil {
+			if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+				fmt.Printf("Error reading config file, using proceed with environment variables or defaults")
+			}
+		}
+
+		var config system.Config
+		if err := v.Unmarshal(&config); err != nil {
+			panic(fmt.Errorf("failed to unmarshal config: %v", err))
+		}
+
+		singleton = &config
+	})
+	return singleton
+}

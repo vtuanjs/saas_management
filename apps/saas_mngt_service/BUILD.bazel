@@ -1,0 +1,14 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/vtuanjs/saas_management/apps/saas_mngt_service
+gazelle(
+    name = "gazelle",
+    gazelle = "@bazel_gazelle//cmd/gazelle",
+)
+
+# Convenience alias for running the main application
+alias(
+    name = "main",
+    actual = "//cmd:cmd",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,134 @@
+services:
+  # Kafka visualization tool
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   ports:
+  #     - "8080:8080"  # Map Kafka UI to port 8080 on the host
+  #   depends_on:
+  #     kafka1:
+  #       condition: service_healthy
+  #   environment:
+  #     KAFKA_CLUSTERS_0_NAME: env-ddd      # Cluster name
+  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9092  # Cluster bootstrap servers
+  #     DYNAMIC_CONFIG_ENABLED: 'true'
+  #   volumes:
+  #     - ./data/kafka_ui_data:/etc/kafkaui   # Persist Kafka UI data
+  #   networks:
+  #     - local-monorepo
+
+  # Kafka cluster
+  kafka1:
+    image: 'bitnami/kafka:3.5'
+    ports:
+      - 9192:9092  # Broker port
+      - 9193:9094    # Controller port
+    environment:
+      ### General configurations
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      # Define Kafka server-side socket listening ports
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      # Define security protocols
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # Set advertised listener
+      - KAFKA_CFG_ADVERTISED_LISTENERS=EXTERNAL://192.168.1.24:9193,PLAINTEXT://kafka1:9092
+      # Interbroker listener name
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      # Cluster ID for Kafka, must be the same across the cluster. Use a generated UUID
+      - KAFKA_KRAFT_CLUSTER_ID=LelM2dIFQkiUFvXCEcqRWA
+      # Cluster address
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9093
+      # Allow PLAINTEXT listener (default is false; not recommended for production)
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      # Set maximum and initial memory for the broker
+      - KAFKA_HEAP_OPTS=-Xmx512M -Xms128M
+      # Enable auto-creation of topics
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # Message retention period (in milliseconds), set to 7 days
+      - KAFKA_LOG_RETENTION_MS=604800000
+      ### Broker configurations
+      # Define external access address (host IP and port) -> get Ip: run docker inspect kafka1
+      # - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://${KAFKA1_IP}:9092
+      # Broker ID, must be unique
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_NODE_ID=1
+    volumes:
+      - ./data/kafka1_data:/bitnami/kafka
+    networks:
+      - local-monorepo
+    healthcheck:
+      test: [ "CMD", "kafka-topics.sh", "--list", "--bootstrap-server", "localhost:9092" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  redis1:
+    image: redis:8.0.3
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis1_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - local-monorepo
+
+  postgres1:
+    image: timescale/timescaledb-ha:pg17
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /pgdata
+      # You can add multiple databases here separated by spaces
+      # db name should be underline and lowercase
+      POSTGRES_MULTIPLE_DATABASES: saas_mngt,webhook,test
+    volumes:
+      - ./data/postgres1_data:/pgdata
+      - ./postgres_cluster/init:/docker-entrypoint-initdb.d
+    networks:
+      - local-monorepo
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data/prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - "9090:9090"
+    networks:
+      - local-monorepo
+
+  grafana:
+    image: grafana/grafana
+    hostname: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SING_UP=false
+      - GF_SERVER_DOMAIN=localhost
+      #enable logger
+      - GF_LOG_MODE=console file
+      - GF_LOG_FILTERS=alerting.notifier.slack:debug alermanager:debug ngalert:debug
+    volumes:
+      - ./data/grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - local-monorepo  
+
+networks:
+  local-monorepo:
+    name: local-monorepo
+    external: true
+    driver: bridge

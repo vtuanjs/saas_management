@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "zap",
+    srcs = ["zap.go"],
+    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/libs/zap",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/core:system",
+        "@in_gopkg_natefinch_lumberjack_v2//:lumberjack_v2",
+        "@org_uber_go_zap//:zap",
+        "@org_uber_go_zap//zapcore",
+    ],
+)

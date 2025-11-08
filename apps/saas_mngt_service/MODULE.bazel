@@ -1,0 +1,42 @@
+# apps/saas_mngt_service/MODULE.bazel
+module(
+    name = "saas_mngt_service",
+    version = "0.0.1",
+)
+
+bazel_dep(
+    name = "rules_go",
+    version = "0.50.1",
+    repo_name = "io_bazel_rules_go",
+)
+bazel_dep(
+    name = "gazelle",
+    version = "0.40.0",  # Update to latest version, e.g., 0.40.0
+    repo_name = "bazel_gazelle",
+)
+
+go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.download(version = "1.24.5")
+
+go_deps = use_extension("@bazel_gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+use_repo(go_deps, "com_github_bsm_redislock", "com_github_dgraph_io_ristretto", "com_github_google_wire", "com_github_redis_go_redis_v9", "com_github_spf13_viper", "com_github_vtuanjs_saas_management_packages_go", "in_gopkg_natefinch_lumberjack_v2", "org_golang_x_net", "org_uber_go_zap")
+
+bazel_dep(name = "rules_oci", version = "2.0.1")
+bazel_dep(name = "rules_pkg", version = "1.0.1")
+bazel_dep(name = "tar.bzl", version = "0.3.0")
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "aspect_bazel_lib", version = "2.14.0")
+
+# Container images
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "distroless_base",
+    digest = "sha256:ccaef5ee2f1850270d453fdf700a5392534f8d1a8ca2acda391fbb6a06b81c86",
+    image = "gcr.io/distroless/base",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64",
+    ],
+)
+use_repo(oci, "distroless_base", "distroless_base_linux_amd64", "distroless_base_linux_arm64")

@@ -1,0 +1,20 @@
+{
+    "protoc": {
+        "path": "protoc",
+        "options": [
+            "--proto_path=./apps/saas_mngt_service/proto",
+            "--proto_path=./apps/webhook_service/proto",
+            "--proto_path=./tools/generate/buf.deps/v3/modules/b5/buf.build/bufbuild/protovalidate/6c6e0d3c608e4549802254a2eee81bc8/files",
+            "--proto_path=./tools/generate/buf.deps/v3/modules/b5/buf.build/googleapis/googleapis/61b203b9a9164be9a834f58c37be6f62/files"
+        ]
+    },
+    "gopls": {
+        "buildFlags": ["-tags=wireinject"]
+    },
+    "cSpell.words": [
+        "Decr",
+        "dgraph",
+        "domainmock",
+        "vtuanjs"
+    ]
+}

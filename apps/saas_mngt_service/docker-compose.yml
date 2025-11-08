@@ -1,0 +1,155 @@
+services:
+  saas_mngt_service:
+    image: saas_mngt_service:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/saas_management/apps/saas_mngt_service:rw
+      - ../../packages:/saas_management/packages
+      - ../../sops:/root/.cache/sops
+      - saas_mngt_service_cache:/root/.cache/
+      - saas_mngt_service_mod:/go/pkg/mod
+    working_dir: /saas_management/apps/saas_mngt_service
+    ports:
+      - 4000:4000
+      - 40000:40000
+    environment:
+      - DEBUG=${DEBUG:-false}
+      - TOOL=${TOOL}
+    entrypoint:
+      - "sh" 
+      - "-c"
+      - |
+        if [ "${TOOL}" = "BUILD" ]; then
+          go mod tidy &&
+          bazel --output_base=/root/.cache/bazel-run mod tidy &&
+          bazel --output_base=/root/.cache/bazel-run run gazelle &&
+          bazel --output_base=/root/.cache/bazel-run build main &&
+          exit 0
+        fi
+
+        if [ "${DEBUG}" = "true" ]; then
+          reflex -r '(\.go$|go\.mod)' -R '.build/' -s -- sh -c "
+            bazel --output_base=/root/.cache/bazel-run run --compilation_mode=dbg gazelle &&
+            bazel --output_base=/root/.cache/bazel-run build --compilation_mode=dbg main &&
+            # bazel --output_base=/root/.cache/bazel-run shutdown &&
+            dlv exec .build/bazel-bin/cmd/cmd_/cmd --listen=:40000 --headless --api-version=2 --accept-multiclient --continue --log
+          "
+        else
+          bazel --output_base=/root/.cache/bazel-run build main &&
+          bazel --output_base=/root/.cache/bazel-run shutdown &&
+          .build/bazel-bin/cmd/cmd_/cmd
+        fi
+    networks:
+      - local-monorepo
+  # saas_mngt_service_tool:
+  #   image: go-local-1.24.5:latest
+  #   volumes:
+  #     - .:/saas_management/apps/saas_mngt_service:rw
+  #     - ../../packages:/saas_management/packages
+  #     - ../../sops:/root/.cache/sops
+  #     - saas_mngt_service_cache:/root/.cache/
+  #     - saas_mngt_service_mod:/go/pkg/mod
+  #   working_dir: /saas_management
+  #   environment:
+  #     - TOOL=${TOOL}
+  #     - SOPS_PGP_FP=${SOPS_PGP_FP}
+  #     - DB_HOST=host.docker.internal
+  #     - MIGRATION_NAME=${MIGRATION_NAME}
+  #   entrypoint:
+  #     - "sh"
+  #     - "-c"
+  #     - |
+  #       cd /saas_management/apps/saas_mngt_service &&
+  #       if [ "${TOOL}" = "GEN" ]; then
+  #           go mod tidy || { echo "\033[0;31mERROR: go mod tidy failed\033[0m"; exit 1; }
+  #           bazel --output_base=/root/.cache/bazel-run mod tidy || { echo "\033[0;31mERROR: bazel mod tidy failed\033[0m"; exit 1; }
+  #           go generate ./ent || { echo "\033[0;31mERROR: go generate ./ent failed\033[0m"; exit 1; }
+  #           wire ./internal/wire || { echo "\033[0;31mERROR: wire failed\033[0m"; exit 1; }
+  #           go generate ./internal/... || { echo "\033[0;31mERROR: go generate failed\033[0m"; exit 1; }
+  #           bazel --output_base=/root/.cache/bazel-run run gazelle || { echo "\033[0;31mERROR: gazelle failed\033[0m"; exit 1; }
+  #           bazel --output_base=/root/.cache/bazel-run build main || { echo "\033[0;31mERROR: bazel build failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MOD_TIDY" ]; then
+  #         go mod tidy || { echo "\033[0;31mERROR: go mod tidy failed\033[0m"; exit 1; }
+  #         bazel --output_base=/root/.cache/bazel-run mod tidy || { echo "\033[0;31mERROR: bazel mod tidy failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "GEN_WIRE" ]; then
+  #         wire ./internal/wire || { echo "\033[0;31mERROR: wire failed\033[0m"; exit 1; }
+  #         bazel --output_base=/root/.cache/bazel-run run gazelle || { echo "\033[0;31mERROR: gazelle failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "GEN_ENT" ]; then
+  #         go generate ./ent || { echo "\033[0;31mERROR: go generate ./ent failed\033[0m"; exit 1; }
+  #         bazel --output_base=/root/.cache/bazel-run run gazelle || { echo "\033[0;31mERROR: gazelle failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "GEN_ENT_SCHEMA" ]; then
+  #         go run entgo.io/ent/cmd/ent new ${SCHEMA} || { echo "\033[0;31mERROR: ent new ${SCHEMA} failed\033[0m"; exit 1; }
+  #         bazel --output_base=/root/.cache/bazel-run run gazelle || { echo "\033[0;31mERROR: gazelle failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "ENV_DECRYPT" ]; then
+  #         gpg --import /root/.cache/sops/private_key.asc || { echo "\033[0;31mERROR: gpg import failed\033[0m"; exit 1; }
+  #         sops decrypt --input-type dotenv --output-type dotenv .env.enc > .env || { echo "\033[0;31mERROR: sops decrypt failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "ENV_ENCRYPT" ]; then
+  #         gpg --import /root/.cache/sops/private_key.asc || { echo "\033[0;31mERROR: gpg import failed\033[0m"; exit 1; }
+  #         sops encrypt --input-type dotenv --output-type dotenv .env > .env.enc || { echo "\033[0;31mERROR: sops encrypt failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "CHECK" ]; then
+  #         bazel --output_base=/root/.cache/bazel-run build main || (echo "\033[0;31mERROR: Bazel build failed. You may need to run 'make generate' to generate the files again.\033[0m" && exit 1)
+  #         golangci-lint run || (echo "\033[0;31mERROR: golangci-lint failed\033[0m" && exit 1)
+
+  #       elif [ "${TOOL}" = "MIGRATE_UP" ]; then
+  #         bash ./scripts/migration_up.sh || { echo "\033[0;31mERROR: migration up failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_DOWN" ]; then
+  #         bash ./scripts/migration_down.sh || { echo "\033[0;31mERROR: migration down failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_ADD" ]; then
+  #         bash ./scripts/migration_add.sh ${MIGRATION_NAME} || { echo "\033[0;31mERROR: migration add failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_REMOVE" ]; then
+  #         bash ./scripts/migration_remove.sh || { echo "\033[0;31mERROR: migration remove failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_STATUS" ]; then
+  #         bash ./scripts/migration_status.sh || { echo "\033[0;31mERROR: migration status failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_HASH" ]; then
+  #         bash ./scripts/migration_hash.sh || { echo "\033[0;31mERROR: migration hash failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_GEN" ]; then
+  #         bash ./scripts/migration_gen.sh || { echo "\033[0;31mERROR: migration gen failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "MIGRATE_REBASE" ]; then
+  #         bash ./scripts/migration_rebase.sh || { echo "\033[0;31mERROR: migration rebase failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "AD_HOC_UP" ]; then
+  #         bash ./scripts/ad_hoc_up.sh || { echo "\033[0;31mERROR: ad-hoc up failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "AD_HOC_ADD" ]; then
+  #         bash ./scripts/ad_hoc_add.sh ${MIGRATION_NAME} || { echo "\033[0;31mERROR: ad-hoc add failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "AD_HOC_DOWN" ]; then
+  #         bash ./scripts/ad_hoc_down.sh || { echo "\033[0;31mERROR: ad-hoc down failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "SEED_UP" ]; then
+  #         bash ./scripts/seed_up.sh || { echo "\033[0;31mERROR: seed up failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "SEED_ADD" ]; then
+  #         bash ./scripts/seed_add.sh ${MIGRATION_NAME} || { echo "\033[0;31mERROR: seed add failed\033[0m"; exit 1; }
+
+  #       elif [ "${TOOL}" = "SEED_DOWN" ]; then
+  #         bash ./scripts/seed_down.sh || { echo "\033[0;31mERROR: seed down failed\033[0m"; exit 1; }
+
+  #       fi
+  #       echo "Successfully executed tool: ${TOOL}"
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+networks:
+  local-monorepo:
+    name: local-monorepo
+    external: true
+    driver: bridge
+volumes:
+  saas_mngt_service_cache:
+  saas_mngt_service_mod:

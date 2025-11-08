@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package saas.v1;
+
+import "saas/v1/entity.proto";
+
+option go_package = "github.com/vtuanjs/saas_management/packages/go/buf/saas/v1";
+
+message RegisterRequest {
+  string email = 1;
+  string username = 2;
+  UserSalutationType salutation = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string name = 6;
+}
+
+message RegisterResponse {
+  User user = 1;
+}
+
+service UserAPI {
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
+}

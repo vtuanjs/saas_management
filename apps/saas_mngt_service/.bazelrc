@@ -1,0 +1,26 @@
+# Bazel configuration file
+build --enable_bzlmod
+query --enable_bzlmod
+
+# Store Bazel convenience symlinks in .build directory
+build --symlink_prefix=.build/bazel-
+build --experimental_convenience_symlinks=normal
+
+# Enable bzlmod (modern Bazel module system)
+common --enable_bzlmod
+
+# Performance optimizations
+build --jobs=auto
+build --local_resources=memory=HOST_RAM*.75
+build --local_resources=cpu=HOST_CPUS*.75
+
+# Go-specific configurations
+# build --@io_bazel_rules_go//go/config:race  # Disabled for cross-compilation compatibility
+
+# Test configurations
+test --test_output=errors
+test --test_summary=detailed
+
+# Coverage configurations
+coverage --combined_report=lcov
+coverage --coverage_report_generator=@bazel_tools//tools/test:coverage_report_generator

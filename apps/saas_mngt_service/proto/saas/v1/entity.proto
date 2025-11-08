@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package saas.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/vtuanjs/saas_management/packages/go/buf/saas/v1";
+
+enum UserSalutationType {
+	USER_SALUTATION_TYPE_UNSPECIFIED = 0;
+	USER_SALUTATION_TYPE_MR = 1;
+	USER_SALUTATION_TYPE_MRS = 2;
+	USER_SALUTATION_TYPE_MS = 3;
+}
+
+message User {
+	string id = 1;
+	string email = 2;
+	string username = 3;
+	UserSalutationType salutation = 4;
+	string phone = 5;
+	string first_name = 6;
+	string last_name = 7;
+	string name = 8;
+	string avatar_id = 9;
+	google.protobuf.Timestamp last_login = 10;
+	string ref_id = 11;
+	bool is_locked = 12;
+	bool is_activated = 13;
+	bool is_admin = 14;
+	bool is_change_pass_required = 15;
+	google.protobuf.Timestamp created_at = 16;
+	google.protobuf.Timestamp updated_at = 17;
+	google.protobuf.Timestamp deleted_at = 18;
+}
