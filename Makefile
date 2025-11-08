@@ -22,16 +22,6 @@ setup:
 	@echo "Changing file permissions..."
 	make -C ./apps/saas_mngt_service setup
 
-
-# If "Error response from daemon: pull access denied for go-local-1.24.5, repository does not exist or may require 'docker login': denied: requested access to the resource is denied"
-# Just use it to fix the issue
-fix:
-	@echo "Initializing project..."
-	@echo "Building docker image: go-local-1.24.5 ..."
-	@docker build -t go-local-1.24.5:latest -f ./tools/go.Dockerfile . --no-cache
-	@echo "Initializing shared networks"
-	@docker network create --driver=bridge local-monorepo || echo "Network 'local-monorepo' already exists - skipping creation"
-
 # infrastructure
 infra-up:
 	@docker compose -f ./environment/docker-compose.yml up -d --remove-orphans

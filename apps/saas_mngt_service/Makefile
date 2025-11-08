@@ -8,6 +8,7 @@ GO_VERSION ?= "1.24.5"
 BUF_TOKEN ?= $(shell test -f ../../secrets/buf_token && cat ../../secrets/buf_token || echo "")
 MAKEFLAGS += --no-print-directory
 SOPS_PGP_FP = $(shell cat ../../secrets/sops_public_key)
+TOOL ?=
 
 setup:
 	@chmod +x ./*.sh
