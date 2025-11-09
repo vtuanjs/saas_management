@@ -12,10 +12,6 @@ DEBUG ?=
 
 .PHONY: setup buf-update buf-gen buf-lint buf-breaking env-decrypt env-encrypt build up down debug check migrate-up migrate-down migrate-add migrate-remove migrate-status migrate-hash migrate-gen migrate-rebase ad-hoc-up ad-hoc-down ad-hoc-add seed-up seed-add seed-down mod-tidy wire %
 
-setup:
-	@chmod +x ./*.sh
-	@chmod +x ./scripts/*.sh
-
 # buf
 buf-update:
 	buf dep update
@@ -89,27 +85,27 @@ migrate-fix:
 
 ad-hoc-up:
 	@echo "Running ad-hoc migrate apply..."
-	@TOOL=AD_HOC_UP docker compose up saas_mngt_service_tool
+	bash ./scripts/ad_hoc_up.sh
 
 ad-hoc-down:
 	@echo "Running ad-hoc migrate down..."
-	@TOOL=AD_HOC_DOWN docker compose up saas_mngt_service_tool
+	bash ./scripts/ad_hoc_down.sh
 
 ad-hoc-add:
 	@echo "Adding new ad-hoc migration..."
-	@TOOL=AD_HOC_ADD MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) docker compose up saas_mngt_service_tool
+	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/ad_hoc_add.sh
 
 seed-up:
 	@echo "Running seed migrate apply..."
-	@TOOL=SEED_UP docker compose up saas_mngt_service_tool
+	bash ./scripts/seed_up.sh
 
 seed-add:
 	@echo "Adding new seed migration..."
-	@TOOL=SEED_ADD MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) docker compose up saas_mngt_service_tool
+	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/seed_add.sh
 
 seed-down:
 	@echo "Running seed migrate down..."
-	@TOOL=SEED_DOWN docker compose up saas_mngt_service_tool
+	bash ./scripts/seed_down.sh
 
 %:
 	@:
