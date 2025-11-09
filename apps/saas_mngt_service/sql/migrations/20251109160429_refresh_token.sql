@@ -25,5 +25,4 @@ CREATE INDEX "refresh_tokens_user_id_idx" ON "refresh_tokens" ("user_id");
 -- +goose StatementBegin
 DROP INDEX IF EXISTS "refresh_tokens_user_id_idx";
 DROP TABLE IF EXISTS "refresh_tokens";
-SELECT 'down SQL query';
 -- +goose StatementEnd
