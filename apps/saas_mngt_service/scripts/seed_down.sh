@@ -5,7 +5,7 @@ DB_PORT=${DB_PORT:-5432}
 DB_USER=${DB_USER:-postgres}
 DB_PASSWORD=${DB_PASSWORD:-postgres}
 DB_SCHEMA=${DB_SCHEMA:-public}
-DB_NAME=${DB_NAME:-saas}
+DB_NAME=${DB_NAME:-saas_mngt}
 MIGRATION_NAME=${MIGRATION_NAME:-}
 
 export GOOSE_DRIVER=postgres
