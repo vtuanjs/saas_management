@@ -70,6 +70,7 @@ check:
 	@make buf-lint -C ../../ 
 	@TOOL=CHECK docker compose up saas_mngt_service_tool
 
+# database migrations
 migrate-up:
 	@echo "Running migrate up..."
 	bash ./scripts/migration_up.sh
@@ -80,27 +81,11 @@ migrate-down:
 
 migrate-add:
 	@echo "Adding new migration..."
-	@TOOL=MIGRATE_ADD MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) docker compose up saas_mngt_service_tool
+	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/migration_add.sh 
 
-migrate-remove:
-	@echo "Removing last migration..."
-	@TOOL=MIGRATE_REMOVE MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) docker compose up saas_mngt_service_tool
-
-migrate-status:
-	@echo "Checking migration status..."
-	@TOOL=MIGRATE_STATUS docker compose up saas_mngt_service_tool
-
-migrate-hash:
-	@echo "Hashing migration files..."
-	@TOOL=MIGRATE_HASH docker compose up saas_mngt_service_tool
-
-migrate-gen:
-	@echo "Generating migration files..."
-	@TOOL=MIGRATE_GEN MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) docker compose up saas_mngt_service_tool
-
-migrate-rebase:
-	@echo "Rebasing migration files..."
-	@TOOL=MIGRATE_REBASE MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) docker compose up saas_mngt_service_tool
+migrate-fix:
+	@echo "Fixing last migration..."
+	bash ./scripts/migration_fix.sh
 
 ad-hoc-up:
 	@echo "Running ad-hoc migrate apply..."

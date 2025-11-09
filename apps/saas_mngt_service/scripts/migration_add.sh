@@ -2,6 +2,9 @@
 
 MIGRATION_NAME=${MIGRATION_NAME:-}
 
+export GOOSE_DRIVER=postgres
+export GOOSE_MIGRATION_DIR=./sql/migrations
+
 # Check if MIGRATION_NAME is provided as a command-line argument
 if [ -z "$MIGRATION_NAME" ] && [ -n "$1" ]; then
   MIGRATION_NAME="$1"
@@ -13,6 +16,6 @@ if [ -z "$MIGRATION_NAME" ]; then
     MIGRATION_NAME=${MIGRATION_NAME:-$MIGRATION_NAME_INPUT}
 fi
 
-atlas migrate new \
-  --dir "file://sql/migrations" \
-  "$MIGRATION_NAME"
+goose create \
+  "$MIGRATION_NAME" \
+  sql

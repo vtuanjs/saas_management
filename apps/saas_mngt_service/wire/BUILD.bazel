@@ -7,8 +7,8 @@ go_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/core:system",
-        "//libs/redis",
-        "//libs/viper",
-        "//libs/zap",
+        "//internal/infrastructures/redis",
+        "//internal/infrastructures/viper",
+        "//internal/infrastructures/zap",
     ],
 )

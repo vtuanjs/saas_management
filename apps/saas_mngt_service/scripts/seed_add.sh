@@ -3,7 +3,7 @@
 MIGRATION_NAME=${MIGRATION_NAME:-}
 
 export GOOSE_DRIVER=postgres
-export GOOSE_MIGRATION_DIR=./sql/seed
+export GOOSE_MIGRATION_DIR=./sql/seeds
 
 # Check if MIGRATION_NAME is provided as a command-line argument
 if [ -z "$MIGRATION_NAME" ] && [ -n "$1" ]; then

@@ -9,7 +9,7 @@ DB_NAME=${DB_NAME:-saas}
 MIGRATION_NAME=${MIGRATION_NAME:-}
 
 export GOOSE_DRIVER=postgres
-export GOOSE_MIGRATION_DIR=./sql/seed
+export GOOSE_MIGRATION_DIR=./sql/seeds
 export GOOSE_TABLE=goose_seed_revisions
 
 # Build the database URL

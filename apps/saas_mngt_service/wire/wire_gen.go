@@ -8,9 +8,9 @@ package wire
 
 import (
 	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/core"
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/libs/redis"
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/libs/viper"
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/libs/zap"
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/redis"
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/viper"
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/zap"
 )
 
 // Injectors from wire.go:
