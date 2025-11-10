@@ -40,10 +40,12 @@ services:
 
         if [ "${TOOL}" = "ENV_DECRYPT" ]; then
           sops decrypt --input-type dotenv --output-type dotenv .env.enc > .env
+          chmod 777 .env
           exit 0
         fi
 
         sops decrypt --input-type dotenv --output-type dotenv .env.enc > .env
+        chmod 777 .env
 
         if [ "${DEBUG}" = "true" ]; then
           reflex -r '(\.go$|go\.mod)' -R '.build/' -s -- sh -c "
