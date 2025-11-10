@@ -40,7 +40,12 @@ env-decrypt:
 env-encrypt:
 	TOOL=ENV_ENCRYPT docker compose up saas_mngt_service
 
-# bazel
+# app build and run
+build-no-cache:
+	@echo "Building without cache..."
+	docker compose build --no-cache saas_mngt_service
+	TOOL=BUILD docker compose up saas_mngt_service --remove-orphans
+
 build:
 	@echo "Building..."
 	TOOL=BUILD docker compose up saas_mngt_service --remove-orphans
