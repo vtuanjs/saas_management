@@ -10,8 +10,8 @@ CREATE TABLE "organization_users" (
 	"updated_by_id" TEXT,
 	"version" INTEGER NOT NULL DEFAULT 1,
 	"deleted_at" TIMESTAMPTZ,
-	CONSTRAINT "organization_users_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE,
-	CONSTRAINT "organization_users_org_id_fkey" FOREIGN KEY ("org_id") REFERENCES "organizations" ("id") ON DELETE CASCADE
+	CONSTRAINT "organization_users_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id"),
+	CONSTRAINT "organization_users_org_id_fkey" FOREIGN KEY ("org_id") REFERENCES "organizations" ("id")
 );
 
 CREATE UNIQUE INDEX "organization_users_user_org_idx" ON "organization_users" ("user_id", "org_id");
