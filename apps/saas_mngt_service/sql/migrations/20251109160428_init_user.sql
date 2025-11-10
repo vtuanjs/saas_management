@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE "users" (
-	"id" text DEFAULT uuid_generate_v7(),
+	"id" text PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"created_at" timestamptz NOT NULL DEFAULT now(),
 	"updated_at" timestamptz NOT NULL DEFAULT now(),
 	"created_by_id" text,
@@ -20,9 +20,7 @@ CREATE TABLE "users" (
 	"is_locked" boolean NOT NULL DEFAULT false,
 	"is_activated" boolean NOT NULL DEFAULT false,
 	"is_admin" boolean NOT NULL DEFAULT false,
-	"is_change_pass_required" boolean NOT NULL DEFAULT true,
-	
-	CONSTRAINT "users_pkey" PRIMARY KEY (id)
+	"is_change_pass_required" boolean NOT NULL DEFAULT true
 );
 
 CREATE UNIQUE INDEX "users_email_idx" ON "users" ("email");

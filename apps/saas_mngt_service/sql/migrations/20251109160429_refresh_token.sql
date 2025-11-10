@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE "refresh_tokens" (
-	"id" text DEFAULT uuid_generate_v7(),
+	"id" text PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"created_at" timestamptz NOT NULL DEFAULT now(),
 	"updated_at" timestamptz NOT NULL DEFAULT now(),
 	"token" text NOT NULL,
@@ -14,7 +14,6 @@ CREATE TABLE "refresh_tokens" (
 	"ip" text,
 	"user_id" text NOT NULL,
 
-	CONSTRAINT "refresh_tokens_pkey" PRIMARY KEY (id),
 	CONSTRAINT "refresh_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id")
 );
 CREATE INDEX "refresh_tokens_user_id_idx" ON "refresh_tokens" ("user_id");
