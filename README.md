@@ -16,11 +16,6 @@ First, install the required tools for your operating system.
 	-   **Ubuntu:** `sudo apt install make`
 	-   **Windows:** Follow online installation guides.
 
--   **GnuPG (gpg)**: Used for encrypting/decrypting environment variables.
-	-   **macOS:** `brew install gpg`
-	-   **Ubuntu:** `sudo apt install gnupg`
-	-   **Windows:** Follow online installation guides.
-
 ### 2. Secrets Configuration
 
 The `secrets` directory at the project root contains the following files:
@@ -62,14 +57,16 @@ To generate mock files for an interface, add the following `go:generate` directi
 
 The `.env` file is automatically created from the encrypted `.env.enc` file when you run the application.
 
-To update environment variables, modify your local `.env` file and then synchronize the changes back to the encrypted file. This prevents losing newly added values.
+- To update environment variables, modify your local `.env` file and then synchronize the changes back to the encrypted file. This prevents losing newly added values.
 
 ```sh
 # Replace <your_service> with the actual service name
-make <your_service>-gen-env-enc
+make -C apps/<your_service>-env-encrypt
 ```
 
-For example: `make saas-mgmt-gen-env-enc`
+For example: `make -C apps/saas_mngt_service/ env-encrypt`
+
+- To test your new local env, you can create a new file called .env.local and put your overwrite env on that file. System will merge env from .env and .env.local
 
 ### Creating a New Application
 
@@ -92,8 +89,12 @@ In production, environment variables are injected directly from a secret managem
 ## Appendix: Useful Commands
 
 ### Generating a New `sops` Keypair
+1. Install gpg
+	-   **macOS:** `brew install gpg`
+	-   **Ubuntu:** `sudo apt install gnupg`
+	-   **Windows:** Follow online installation guides.
 
-1.  Generate a new GPG key:
+2.  Generate a new GPG key:
 	```sh
 	gpg --full-generate-key
 	```
@@ -102,11 +103,11 @@ In production, environment variables are injected directly from a secret managem
 	-   Set an expiration or choose `0` for no expiration.
 	-   Provide your user information and skip the passphrase.
 
-2.  Note the public key fingerprint from the output (e.g., `49031300F4AF150110DCECAD347C46C2BFE6D611`).
+3.  Note the public key fingerprint from the output (e.g., `49031300F4AF150110DCECAD347C46C2BFE6D611`).
 
-3.  Export the private key:
+4.  Export the private key:
 	```sh
 	gpg --armor --export-secret-keys YOUR_PUBLIC_KEY_FINGERPRINT > sops_private_key.asc
 	```
 
-4.  Place the generated `sops_private_key.asc` in the `secrets` directory and update `sops_public_key` with the fingerprint.
+5.  Place the generated `sops_private_key.asc` in the `secrets` directory and update `sops_public_key` with the fingerprint.

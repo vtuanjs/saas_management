@@ -6,7 +6,6 @@ ENV=local
 GO_VERSION ?= "1.24.5"
 BUF_TOKEN ?= $(shell test -f ../../secrets/buf_token && cat ../../secrets/buf_token || echo "")
 MAKEFLAGS += --no-print-directory
-SOPS_PGP_FP = $(shell cat ../../secrets/sops_public_key)
 TOOL ?=
 DEBUG ?=
 
@@ -36,12 +35,10 @@ gen:
 
 # env
 env-decrypt:
-	export SOPS_PGP_FP=$(SOPS_PGP_FP)
-	sops decrypt --input-type dotenv --output-type dotenv .env.enc > .env
+	TOOL=ENV_DECRYPT docker compose up saas_mngt_service
 
 env-encrypt:
-	export SOPS_PGP_FP=$(SOPS_PGP_FP)
-	sops encrypt --input-type dotenv --output-type dotenv .env > .env.enc
+	TOOL=ENV_ENCRYPT docker compose up saas_mngt_service
 
 # bazel
 build:
