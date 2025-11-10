@@ -9,7 +9,6 @@ CREATE TABLE "users" (
 	"version" integer NOT NULL DEFAULT 1,
 	"deleted_at" timestamptz,
 	"email" text NOT NULL,
-	"salutation" text,
 	"phone" text,
 	"first_name" text,
 	"last_name" text,
