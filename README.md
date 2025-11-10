@@ -113,3 +113,7 @@ In production, environment variables are injected directly from a secret managem
 	```
 
 5.  Place the generated `sops_private_key.asc` in the `secrets` directory and update `sops_public_key` with the fingerprint.
+
+6.	Encode your environment with your new secret. See how to do it in *Managing Environment Variables*
+
+7.	Share the new private and public SOPS keys with your team
