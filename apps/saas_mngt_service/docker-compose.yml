@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/saas_management/apps/saas_mngt_service:rw
       - ../../packages:/saas_management/packages
-      - ../../secrets:/root/.cache//secrets
+      - ../../secrets:/saas_management//secrets
       - saas_mngt_service_cache:/root/.cache/
       - saas_mngt_service_mod:/go/pkg/mod
     working_dir: /saas_management/apps/saas_mngt_service
@@ -30,8 +30,8 @@ services:
         fi
 
         echo "Importing SOPS GPG keys..."
-        export SOPS_PGP_FP=$(cat /root/.cache/secrets/sops_public_key)
-        gpg --import /root/.cache/secrets/sops_private_key.asc
+        export SOPS_PGP_FP=$(cat /saas_management/secrets/sops_public_key)
+        gpg --import /saas_management/secrets/sops_private_key.asc
 
         if [ "${TOOL}" = "ENV_ENCRYPT" ]; then
           sops encrypt --input-type dotenv --output-type dotenv .env > .env.enc

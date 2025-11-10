@@ -66,7 +66,7 @@ make -C apps/<your_service>-env-encrypt
 
 For example: `make -C apps/saas_mngt_service/ env-encrypt`
 
-- To test your new local env, you can create a new file called .env.local and put your overwrite env on that file. System will merge env from .env and .env.local
+- To test your new local environment, you can create a new file called `.env.local` and put your overridden environment variables in that file. The system will merge environment variables from `.env` and `.env.local`.
 
 ### Creating a New Application
 
