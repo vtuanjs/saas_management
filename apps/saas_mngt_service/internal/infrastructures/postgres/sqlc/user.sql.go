@@ -16,7 +16,7 @@ RETURNING id, email, phone, first_name, last_name, name, avatar_id, last_login, 
 `
 
 type CreateUserParams struct {
-	Name  *string
+	Name  string
 	Email string
 }
 

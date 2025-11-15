@@ -27,7 +27,7 @@ sql:
             go_type:
               import: "time"
               type: "Time"
-              pointer: true
+              pointer: false
           - db_type: "pg_catalog.timestamp"
             nullable: true
             go_type:
@@ -38,7 +38,7 @@ sql:
             go_type:
               import: "time"
               type: "Time"
-              pointer: true
+              pointer: false
           - db_type: "timestamp"
             nullable: true
             go_type:
@@ -49,7 +49,7 @@ sql:
             go_type:
               import: "time"
               type: "Time"
-              pointer: true
+              pointer: false
           - db_type: "timestamptz"
             nullable: true
             go_type:
@@ -60,7 +60,7 @@ sql:
             go_type:
               import: "time"
               type: "Time"
-              pointer: true
+              pointer: false
         
           
           
