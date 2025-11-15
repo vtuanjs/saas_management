@@ -2,10 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict thPz4fWaxfo1MBRM0xAT4gNSBrF70A1ymTU29l1vBUkbv84JwpOMizgBxSQnSuU
-
 -- Dumped from database version 18.0 (Ubuntu 18.0-1.pgdg22.04+3)
--- Dumped by pg_dump version 18.1 (Debian 18.1-1.pgdg12+2)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -561,6 +558,4 @@ ALTER TABLE ONLY public.role_permissions
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict thPz4fWaxfo1MBRM0xAT4gNSBrF70A1ymTU29l1vBUkbv84JwpOMizgBxSQnSuU
 

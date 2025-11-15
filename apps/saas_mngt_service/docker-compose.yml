@@ -31,6 +31,7 @@ services:
 
         if [ "${TOOL}" = "DUMP_SQL" ]; then
             PGPASSWORD="${DB_PASSWORD}" pg_dump -h ${DB_DOCKER_SV_NAME} -U "${DB_USER}" -d "${DB_NAME}" --schema=${DB_SCHEMA} --schema-only -f ./sql/schema.sql
+            sed -i "/-- Dumped by pg_dump/d; /\\\\restrict/{N;d;}; /\\unrestrict/{N;d;}" ./sql/schema.sql
           exit 0
         fi
 
