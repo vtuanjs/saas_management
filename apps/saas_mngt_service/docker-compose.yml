@@ -22,10 +22,15 @@ services:
       - "-c"
       - |
         if [ "${TOOL}" = "BUILD" ]; then
-          go mod tidy &&
+          go mod tidy
           bazel --output_base=/root/.cache/bazel-run mod tidy
           bazel --output_base=/root/.cache/bazel-run run gazelle
           bazel --output_base=/root/.cache/bazel-run build main
+          exit 0
+        fi
+
+        if [ "${TOOL}" = "DUMP_SQL" ]; then
+            PGPASSWORD="${DB_PASSWORD}" pg_dump -h ${DB_DOCKER_SV_NAME} -U "${DB_USER}" -d "${DB_NAME}" --schema=${DB_SCHEMA} --schema-only -f ./sql/schema.sql
           exit 0
         fi
 

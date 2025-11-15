@@ -8,6 +8,13 @@ BUF_TOKEN ?= $(shell test -f ../../secrets/buf_token && cat ../../secrets/buf_to
 MAKEFLAGS += --no-print-directory
 TOOL ?=
 DEBUG ?=
+DB_DOCKER_SV_NAME ?= postgres1
+DB_HOST ?= localhost
+DB_PORT ?= 5432
+DB_USER ?= postgres
+DB_PASSWORD ?= postgres
+DB_SCHEMA ?= public
+DB_NAME ?= saas_mngt
 
 .PHONY: setup buf-update buf-gen buf-lint buf-breaking env-decrypt env-encrypt build up down debug check migrate-up migrate-down migrate-add migrate-remove migrate-status migrate-hash migrate-gen migrate-rebase ad-hoc-up ad-hoc-down ad-hoc-add seed-up seed-add seed-down mod-tidy wire %
 
@@ -72,10 +79,12 @@ check:
 migrate-up:
 	@echo "Running migrate up..."
 	bash ./scripts/migration_up.sh
+	TOOL=DUMP_SQL docker compose up saas_mngt_service
 
 migrate-down:
 	@echo "Running migrate down..."
 	bash ./scripts/migration_down.sh
+	TOOL=DUMP_SQL docker compose up saas_mngt_service
 
 migrate-add:
 	@echo "Adding new migration..."
