@@ -1,11 +1,11 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE "organizations" (
+CREATE TABLE "roles" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
-	"code" TEXT NOT NULL,
 	"name" TEXT NOT NULL,
-	"logo" JSON,
-	"is_locked" BOOLEAN NOT NULL DEFAULT FALSE,
+	"description" TEXT,
+	"system" BOOLEAN NOT NULL DEFAULT FALSE,
+	"org_id" TEXT NOT NULL,
 
 	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
 	"updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -14,12 +14,11 @@ CREATE TABLE "organizations" (
 	"deleted_at" TIMESTAMPTZ,
 	"version" INTEGER NOT NULL DEFAULT 1
 );
-
-CREATE UNIQUE INDEX organizations_code_idx ON organizations(code);
+CREATE INDEX "roles_org_id_idx" ON "roles" ("org_id");
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-DROP INDEX IF EXISTS "organizations_code_idx";
-DROP TABLE IF EXISTS "organizations";
+DROP INDEX IF EXISTS "roles_org_id_idx";
+DROP TABLE IF EXISTS "roles";
 -- +goose StatementEnd

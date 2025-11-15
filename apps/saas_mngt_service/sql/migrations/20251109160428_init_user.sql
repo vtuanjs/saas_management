@@ -2,12 +2,6 @@
 -- +goose StatementBegin
 CREATE TABLE "users" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
-	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-	"updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
-	"created_by_id" TEXT,
-	"updated_by_id" TEXT,
-	"version" INTEGER NOT NULL DEFAULT 1,
-	"deleted_at" TIMESTAMPTZ,
 	"email" TEXT NOT NULL,
 	"phone" TEXT,
 	"first_name" TEXT,
@@ -19,7 +13,14 @@ CREATE TABLE "users" (
 	"is_locked" BOOLEAN NOT NULL DEFAULT FALSE,
 	"is_activated" BOOLEAN NOT NULL DEFAULT FALSE,
 	"is_admin" BOOLEAN NOT NULL DEFAULT FALSE,
-	"is_change_pass_required" BOOLEAN NOT NULL DEFAULT TRUE
+	"is_change_pass_required" BOOLEAN NOT NULL DEFAULT TRUE,
+
+	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+	"updated_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
+	"created_by_id" TEXT,
+	"updated_by_id" TEXT,
+	"deleted_at" TIMESTAMPTZ,
+	"version" INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE UNIQUE INDEX "users_email_idx" ON "users" ("email");
