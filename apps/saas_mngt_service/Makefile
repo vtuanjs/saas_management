@@ -18,10 +18,45 @@ DB_NAME ?= saas_mngt
 
 .PHONY: setup buf-update buf-gen buf-lint buf-breaking env-decrypt env-encrypt build up down debug check migrate-up migrate-down migrate-add migrate-remove migrate-status migrate-hash migrate-gen migrate-rebase ad-hoc-up ad-hoc-down ad-hoc-add seed-up seed-add seed-down mod-tidy wire %
 
-# buf
+# gen
+gen-proto:
+	buf generate
+
+gen-wire:
+	@echo "\033[0;32m Generating wire...\033[0m"
+	wire ./wire
+	@echo "\033[0;32m Build after code generation...\033[0m"
+	make build
+
+gen-mock:
+	@echo "\033[0;32m Generating mocks...\033[0m"
+	go generate ./internal/...
+	@echo "\033[0;32m Build after code generation...\033[0m"
+	make build
+
+gen-query:
+	@echo "\033[0;32m Generating sqlc query...\033[0m"
+	@sqlc generate
+	@echo "\033[0;32m Build after code generation...\033[0m"
+	@make build
+
+gen-migration:
+	@echo "Adding new migration..."
+	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/migration_add.sh
+
+gen-seed:
+	@echo "Adding new seed migration..."
+	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/seed_add.sh
+
+gen-ad-hoc:
+	@echo "Adding new ad-hoc migration..."
+	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/ad_hoc_add.sh
+
+# buf commands
 buf-update:
 	buf dep update
 
+## Another way: make gen-buf
 buf-gen:
 	buf generate
 
@@ -30,15 +65,6 @@ buf-lint:
 
 buf-breaking:
 	buf breaking --against "../../.git#branch=develop,subdir=proto"
-
-# gen wire + mock
-gen:
-	@echo "Generating wire..."
-	wire ./wire
-	@echo "Generating mocks..."
-	go generate ./internal/...
-	@echo "Build after code generation..."
-	make build
 
 # env
 env-decrypt:
@@ -86,6 +112,7 @@ migrate-down:
 	bash ./scripts/migration_down.sh
 	TOOL=DUMP_SQL docker compose up saas_mngt_service
 
+## Another way: make migrate-add
 migrate-add:
 	@echo "Adding new migration..."
 	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/migration_add.sh 
@@ -102,6 +129,7 @@ ad-hoc-down:
 	@echo "Running ad-hoc migrate down..."
 	bash ./scripts/ad_hoc_down.sh
 
+## Another way: make gen-ad-hoc
 ad-hoc-add:
 	@echo "Adding new ad-hoc migration..."
 	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/ad_hoc_add.sh
@@ -110,6 +138,7 @@ seed-up:
 	@echo "Running seed migrate apply..."
 	bash ./scripts/seed_up.sh
 
+## Another way: make gen-seed
 seed-add:
 	@echo "Adding new seed migration..."
 	MIGRATION_NAME=$(word 2,$(MAKECMDGOALS)) bash ./scripts/seed_add.sh
