@@ -5,7 +5,7 @@ CREATE TABLE "role_permissions" (
 	"user_id" TEXT NOT NULL,
 	"role_id" TEXT NOT NULL,
 	"permission_id" TEXT NOT NULL,
-	"project_id" TEXT,
+	"project_id" TEXT NOT NULL,
 	"org_id" TEXT NOT NULL,
 
 	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),

@@ -5,7 +5,7 @@ CREATE TABLE "projects" (
 	"name" TEXT NOT NULL,
 	"code" TEXT NOT NULL,
 	"parent_id" TEXT,
-	"logo" JSON,
+	"logo" JSON NOT NULL DEFAULT '{}'::JSON,
 	"org_id" TEXT NOT NULL,
 
 	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),

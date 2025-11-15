@@ -5,183 +5,27 @@
 package sqlc
 
 import (
-	"database/sql/driver"
-	"fmt"
-
-	"github.com/jackc/pgx/v5/pgtype"
+	"time"
 )
-
-type TemplateType string
-
-const (
-	TemplateTypePERMISSION TemplateType = "PERMISSION"
-	TemplateTypeROLE       TemplateType = "ROLE"
-)
-
-func (e *TemplateType) Scan(src interface{}) error {
-	switch s := src.(type) {
-	case []byte:
-		*e = TemplateType(s)
-	case string:
-		*e = TemplateType(s)
-	default:
-		return fmt.Errorf("unsupported scan type for TemplateType: %T", src)
-	}
-	return nil
-}
-
-type NullTemplateType struct {
-	TemplateType TemplateType
-	Valid        bool // Valid is true if TemplateType is not NULL
-}
-
-// Scan implements the Scanner interface.
-func (ns *NullTemplateType) Scan(value interface{}) error {
-	if value == nil {
-		ns.TemplateType, ns.Valid = "", false
-		return nil
-	}
-	ns.Valid = true
-	return ns.TemplateType.Scan(value)
-}
-
-// Value implements the driver Valuer interface.
-func (ns NullTemplateType) Value() (driver.Value, error) {
-	if !ns.Valid {
-		return nil, nil
-	}
-	return string(ns.TemplateType), nil
-}
-
-type GooseMigrationRevision struct {
-	ID        int32
-	VersionID int64
-	IsApplied bool
-	Tstamp    pgtype.Timestamp
-}
-
-type OrgSyncTemplate struct {
-	ID           string
-	TemplateName string
-	TemplateType TemplateType
-	TemplateData []byte
-	Active       pgtype.Bool
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	Version      int32
-}
-
-type OrgUser struct {
-	ID          string
-	UserID      string
-	OrgID       string
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	CreatedByID pgtype.Text
-	UpdatedByID pgtype.Text
-	DeletedAt   pgtype.Timestamptz
-	Version     int32
-}
-
-type Organization struct {
-	ID          string
-	Code        string
-	Name        string
-	Logo        []byte
-	IsLocked    bool
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	CreatedByID pgtype.Text
-	UpdatedByID pgtype.Text
-	DeletedAt   pgtype.Timestamptz
-	Version     int32
-}
-
-type Permission struct {
-	ID          string
-	Code        string
-	Name        string
-	Description pgtype.Text
-	System      bool
-	OrgID       string
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	CreatedByID pgtype.Text
-	UpdatedByID pgtype.Text
-	DeletedAt   pgtype.Timestamptz
-	Version     int32
-}
-
-type Project struct {
-	ID          string
-	Name        string
-	Code        string
-	ParentID    pgtype.Text
-	Logo        []byte
-	OrgID       string
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	CreatedByID pgtype.Text
-	UpdatedByID pgtype.Text
-	DeletedAt   pgtype.Timestamptz
-	Version     int32
-}
-
-type RefreshToken struct {
-	ID        string
-	TokenID   string
-	ExpiresAt pgtype.Timestamptz
-	Device    []byte
-	Ip        pgtype.Text
-	UserID    string
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
-	Version   int32
-}
-
-type Role struct {
-	ID          string
-	Name        string
-	Description pgtype.Text
-	System      bool
-	OrgID       string
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	CreatedByID pgtype.Text
-	UpdatedByID pgtype.Text
-	DeletedAt   pgtype.Timestamptz
-	Version     int32
-}
-
-type RolePermission struct {
-	ID           string
-	UserID       string
-	RoleID       string
-	PermissionID string
-	ProjectID    pgtype.Text
-	OrgID        string
-	CreatedAt    pgtype.Timestamptz
-	CreatedByID  pgtype.Text
-}
 
 type User struct {
 	ID                   string
 	Email                string
-	Phone                pgtype.Text
-	FirstName            pgtype.Text
-	LastName             pgtype.Text
-	Name                 pgtype.Text
-	AvatarID             pgtype.Text
-	LastLogin            pgtype.Timestamptz
-	RefID                pgtype.Text
+	Phone                *string
+	FirstName            *string
+	LastName             *string
+	Name                 *string
+	AvatarID             *string
+	LastLogin            *time.Time
+	RefID                *string
 	IsLocked             bool
 	IsActivated          bool
 	IsAdmin              bool
 	IsChangePassRequired bool
-	CreatedAt            pgtype.Timestamptz
-	UpdatedAt            pgtype.Timestamptz
-	CreatedByID          pgtype.Text
-	UpdatedByID          pgtype.Text
-	DeletedAt            pgtype.Timestamptz
+	CreatedAt            *time.Time
+	UpdatedAt            *time.Time
+	CreatedByID          *string
+	UpdatedByID          *string
+	DeletedAt            *time.Time
 	Version              int32
 }

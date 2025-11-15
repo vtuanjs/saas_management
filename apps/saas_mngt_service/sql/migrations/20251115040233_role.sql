@@ -3,7 +3,7 @@
 CREATE TABLE "roles" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"name" TEXT NOT NULL,
-	"description" TEXT,
+	"description" TEXT NOT NULL DEFAULT '',
 	"system" BOOLEAN NOT NULL DEFAULT FALSE,
 	"org_id" TEXT NOT NULL,
 

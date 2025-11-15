@@ -4,7 +4,7 @@ CREATE TABLE "permissions" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"code" TEXT NOT NULL,
 	"name" TEXT NOT NULL,
-	"description" TEXT,
+	"description" TEXT NOT NULL DEFAULT '',
 	"system" BOOLEAN NOT NULL DEFAULT FALSE,
 	"org_id" TEXT NOT NULL,
 	

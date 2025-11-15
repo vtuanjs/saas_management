@@ -7,8 +7,6 @@ package sqlc
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createUser = `-- name: CreateUser :one
@@ -18,11 +16,11 @@ RETURNING id, email, phone, first_name, last_name, name, avatar_id, last_login, 
 `
 
 type CreateUserParams struct {
-	Name  pgtype.Text
+	Name  *string
 	Email string
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (*User, error) {
 	row := q.db.QueryRow(ctx, createUser, arg.Name, arg.Email)
 	var i User
 	err := row.Scan(
@@ -46,14 +44,14 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.DeletedAt,
 		&i.Version,
 	)
-	return i, err
+	return &i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
 SELECT id, email, phone, first_name, last_name, name, avatar_id, last_login, ref_id, is_locked, is_activated, is_admin, is_change_pass_required, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version FROM users WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetUserByID(ctx context.Context, id string) (User, error) {
+func (q *Queries) GetUserByID(ctx context.Context, id string) (*User, error) {
 	row := q.db.QueryRow(ctx, getUserByID, id)
 	var i User
 	err := row.Scan(
@@ -77,5 +75,5 @@ func (q *Queries) GetUserByID(ctx context.Context, id string) (User, error) {
 		&i.DeletedAt,
 		&i.Version,
 	)
-	return i, err
+	return &i, err
 }

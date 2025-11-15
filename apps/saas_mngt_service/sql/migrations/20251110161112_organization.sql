@@ -4,7 +4,7 @@ CREATE TABLE "organizations" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"code" TEXT NOT NULL,
 	"name" TEXT NOT NULL,
-	"logo" JSON,
+	"logo" JSON NOT NULL DEFAULT '{}'::JSON,
 	"is_locked" BOOLEAN NOT NULL DEFAULT FALSE,
 
 	"created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),

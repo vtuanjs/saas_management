@@ -6,8 +6,8 @@ CREATE TABLE "org_sync_templates" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"template_name" TEXT NOT NULL,
 	"template_type" template_type NOT NULL,
-	"template_data" JSON,
-	"active" BOOLEAN DEFAULT TRUE,
+	"template_data" JSON NOT NULL DEFAULT '{}'::JSON,
+	"active" BOOLEAN NOT NULL DEFAULT TRUE,
 
 	"created_at" TIMESTAMPTZ DEFAULT NOW(),
 	"updated_at" TIMESTAMPTZ DEFAULT NOW(),
@@ -17,5 +17,6 @@ CREATE TABLE "org_sync_templates" (
 
 -- +goose Down
 -- +goose StatementBegin
+DROP TYPE IF EXISTS "template_type";
 DROP TABLE IF EXISTS "org_sync_templates";
 -- +goose StatementEnd
