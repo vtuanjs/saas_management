@@ -10,18 +10,19 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (name, email, created_at, updated_at)
-VALUES ($1, $2, NOW(), NOW())
-RETURNING id, email, phone, first_name, last_name, name, avatar_id, last_login, ref_id, is_locked, is_activated, is_admin, is_change_pass_required, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version
+INSERT INTO users (name, email, avatar, created_at, updated_at)
+VALUES ($1, $2, $3, NOW(), NOW())
+RETURNING id, email, phone, first_name, last_name, name, avatar, last_login, ref, is_locked, is_activated, is_admin, is_change_pass_required, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version
 `
 
 type CreateUserParams struct {
-	Name  string
-	Email string
+	Name   string
+	Email  string
+	Avatar []byte
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (*User, error) {
-	row := q.db.QueryRow(ctx, createUser, arg.Name, arg.Email)
+	row := q.db.QueryRow(ctx, createUser, arg.Name, arg.Email, arg.Avatar)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -30,9 +31,9 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (*User, 
 		&i.FirstName,
 		&i.LastName,
 		&i.Name,
-		&i.AvatarID,
+		&i.Avatar,
 		&i.LastLogin,
-		&i.RefID,
+		&i.Ref,
 		&i.IsLocked,
 		&i.IsActivated,
 		&i.IsAdmin,
@@ -48,7 +49,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (*User, 
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, email, phone, first_name, last_name, name, avatar_id, last_login, ref_id, is_locked, is_activated, is_admin, is_change_pass_required, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version FROM users WHERE id = $1 LIMIT 1
+SELECT id, email, phone, first_name, last_name, name, avatar, last_login, ref, is_locked, is_activated, is_admin, is_change_pass_required, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version FROM users WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserByID(ctx context.Context, id string) (*User, error) {
@@ -61,9 +62,9 @@ func (q *Queries) GetUserByID(ctx context.Context, id string) (*User, error) {
 		&i.FirstName,
 		&i.LastName,
 		&i.Name,
-		&i.AvatarID,
+		&i.Avatar,
 		&i.LastLogin,
-		&i.RefID,
+		&i.Ref,
 		&i.IsLocked,
 		&i.IsActivated,
 		&i.IsAdmin,

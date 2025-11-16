@@ -17,6 +17,6 @@ CREATE TABLE "org_sync_templates" (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TYPE IF EXISTS "template_type";
 DROP TABLE IF EXISTS "org_sync_templates";
+DROP TYPE IF EXISTS "template_type";
 -- +goose StatementEnd

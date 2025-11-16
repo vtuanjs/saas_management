@@ -37,8 +37,9 @@ gen-mock:
 gen-query:
 	@echo "\033[0;32m Generating sqlc query...\033[0m"
 	@sqlc generate
-	@echo "\033[0;32m Build after code generation...\033[0m"
-	@make build
+# 	@echo "\033[0;32m Build after code generation...\033[0m"
+#	You can manually build after generation if needed
+# 	@make build
 
 gen-migration:
 	@echo "Adding new migration..."
