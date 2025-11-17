@@ -1,4 +1,4 @@
-package entity
+package domain
 
 type AttachmentType int
 
@@ -9,11 +9,13 @@ const (
 )
 
 type Attachment struct {
+	// Unique identifier for the attachment. Useful for when multiple attachments are associated with a single entity.
 	ID   string `json:"id"`
 	Path string `json:"path"`
 	// FromInternal indicates the attachment was created within the system.
 	// If true, ReturnUrl should be baseURL + Path; otherwise ReturnUrl is just Path.
 	FromInternal bool           `json:"from_internal"`
 	Type         AttachmentType `json:"type"`
+	Ref          string         `json:"ref"`
 	ReturnUrl    string         `json:"return_url"`
 }
