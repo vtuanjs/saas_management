@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain/entity"
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/repository/sqlc"
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/postgres/sqlc"
 	pkgstring "github.com/vtuanjs/saas_management/packages/go/pkg/pkg_string"
 )
 
@@ -14,7 +14,7 @@ func NewUserDto() *UserDto {
 	return &UserDto{}
 }
 
-func (m *UserDto) ToEntity(model *sqlc.User) *entity.User {
+func (m *UserDto) ModelToEntity(model *sqlc.User) *entity.User {
 	if model == nil {
 		return nil
 	}
@@ -33,7 +33,7 @@ func (m *UserDto) ToEntity(model *sqlc.User) *entity.User {
 		Phone:                model.Phone,
 		FirstName:            model.FirstName,
 		LastName:             model.LastName,
-		Name:                 model.Name,
+		Name:                 *model.Name,
 		Avatar:               avatar,
 		LastLogin:            model.LastLogin,
 		Ref:                  pkgstring.DerefString(model.Ref),
@@ -49,7 +49,7 @@ func (m *UserDto) ToEntity(model *sqlc.User) *entity.User {
 		Version:              model.Version,
 	}
 }
-func (m *UserDto) ToModel(entity *entity.User) *sqlc.User {
+func (m *UserDto) EntityToModel(entity *entity.User) *sqlc.User {
 	if entity == nil {
 		return nil
 	}
@@ -67,7 +67,6 @@ func (m *UserDto) ToModel(entity *entity.User) *sqlc.User {
 		Phone:                entity.Phone,
 		FirstName:            entity.FirstName,
 		LastName:             entity.LastName,
-		Name:                 entity.Name,
 		Avatar:               avatar,
 		LastLogin:            entity.LastLogin,
 		Ref:                  pkgstring.PointerString(entity.Ref),
@@ -84,4 +83,4 @@ func (m *UserDto) ToModel(entity *entity.User) *sqlc.User {
 	}
 }
 
-func (m *UserDto) ToResponse(entity *entity.User) {}
+func (m *UserDto) EntityToResponse(entity *entity.User) {}

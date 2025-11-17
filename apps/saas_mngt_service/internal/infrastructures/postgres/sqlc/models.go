@@ -14,7 +14,7 @@ type User struct {
 	Phone                string
 	FirstName            string
 	LastName             string
-	Name                 string
+	Name                 *string
 	Avatar               []byte
 	LastLogin            *time.Time
 	Ref                  *string

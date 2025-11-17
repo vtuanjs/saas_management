@@ -277,7 +277,7 @@ CREATE TABLE public.users (
     phone text NOT NULL,
     first_name text NOT NULL,
     last_name text NOT NULL,
-    name text NOT NULL,
+    name text GENERATED ALWAYS AS (((first_name || ' '::text) || last_name)) STORED,
     avatar json,
     last_login timestamp with time zone,
     ref text,

@@ -6,7 +6,7 @@ CREATE TABLE "users" (
 	"phone" TEXT NOT NULL,
 	"first_name" TEXT NOT NULL,
 	"last_name" TEXT NOT NULL,
-	"name" TEXT NOT NULL,
+	"name" TEXT GENERATED ALWAYS AS ("first_name" || ' ' || "last_name") STORED,
 	"avatar" JSON,
 	"last_login" TIMESTAMPTZ,
 	"ref" TEXT,

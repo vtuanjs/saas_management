@@ -9,8 +9,8 @@ import (
 )
 
 type Querier interface {
-	CreateUser(ctx context.Context, arg CreateUserParams) (*User, error)
 	GetUserByID(ctx context.Context, id string) (*User, error)
+	SaveUser(ctx context.Context, arg SaveUserParams) (*User, error)
 }
 
 var _ Querier = (*Queries)(nil)

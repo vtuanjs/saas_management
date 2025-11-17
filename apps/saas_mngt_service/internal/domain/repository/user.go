@@ -1,8 +1,12 @@
 package repository
 
-import "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain/entity"
+import (
+	"context"
+
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain/entity"
+)
 
 type UserRepository interface {
-	FindByID(id string) (*entity.User, error)
-	Save(user *entity.User) (*entity.User, error)
+	FindByID(ctx context.Context, id string) (*entity.User, error)
+	Save(ctx context.Context, user *entity.User) (*entity.User, error)
 }
