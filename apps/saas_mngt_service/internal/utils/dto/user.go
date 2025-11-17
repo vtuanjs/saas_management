@@ -3,7 +3,7 @@ package dto
 import (
 	"encoding/json"
 
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain"
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain/entity"
 	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/repository/sqlc"
 	pkgstring "github.com/vtuanjs/saas_management/packages/go/pkg/pkg_string"
 )
@@ -14,20 +14,20 @@ func NewUserDto() *UserDto {
 	return &UserDto{}
 }
 
-func (m *UserDto) ToEntity(model *sqlc.User) *domain.UserEntity {
+func (m *UserDto) ToEntity(model *sqlc.User) *entity.User {
 	if model == nil {
 		return nil
 	}
 
-	var avatar *domain.Attachment
+	var avatar *entity.Attachment
 	if model.Avatar != nil {
-		var attachment domain.Attachment
+		var attachment entity.Attachment
 		if err := json.Unmarshal(model.Avatar, &attachment); err == nil {
 			avatar = &attachment
 		}
 	}
 
-	return &domain.UserEntity{
+	return &entity.User{
 		ID:                   model.ID,
 		Email:                model.Email,
 		Phone:                model.Phone,
@@ -49,7 +49,7 @@ func (m *UserDto) ToEntity(model *sqlc.User) *domain.UserEntity {
 		Version:              model.Version,
 	}
 }
-func (m *UserDto) ToModel(entity *domain.UserEntity) *sqlc.User {
+func (m *UserDto) ToModel(entity *entity.User) *sqlc.User {
 	if entity == nil {
 		return nil
 	}
@@ -84,4 +84,4 @@ func (m *UserDto) ToModel(entity *domain.UserEntity) *sqlc.User {
 	}
 }
 
-func (m *UserDto) ToResponse(entity *domain.UserEntity) {}
+func (m *UserDto) ToResponse(entity *entity.User) {}

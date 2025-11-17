@@ -1,4 +1,4 @@
-package domain
+package entity
 
 type AttachmentType int
 
@@ -18,4 +18,11 @@ type Attachment struct {
 	Type         AttachmentType `json:"type"`
 	Ref          string         `json:"ref"`
 	ReturnUrl    string         `json:"return_url"`
+}
+
+type Device struct {
+	Name      string `json:"name"`
+	OS        string `json:"os"`
+	Browser   string `json:"browser"`
+	UserAgent string `json:"user_agent"`
 }

@@ -1,8 +1,8 @@
-package domain
+package entity
 
 import "time"
 
-type UserEntity struct {
+type User struct {
 	ID                   string
 	Email                string
 	Phone                string
@@ -22,10 +22,4 @@ type UserEntity struct {
 	UpdatedByID          string
 	DeletedAt            *time.Time
 	Version              int32
-}
-
-type UserRepository interface {
-	FindByID(id string) (*UserEntity, error)
-	FindByEmail(email string) (*UserEntity, error)
-	Save(user *UserEntity) (*UserEntity, error)
 }

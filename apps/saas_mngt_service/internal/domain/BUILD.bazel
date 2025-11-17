@@ -1,8 +1,0 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "domain",
-    srcs = ["repository.go"],
-    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain",
-    visibility = ["//:__subpackages__"],
-)
