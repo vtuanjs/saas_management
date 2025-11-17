@@ -27,13 +27,16 @@ func (u *UserRepository) FindByID(ctx context.Context, id string) (*entity.User,
 	}
 
 	dto := dto.NewUserDto()
-	return dto.ModelToEntity(result), nil
+	return dto.ModelToEntity(result)
 }
 
 // Save implements repository.UserRepository.
 func (u *UserRepository) Save(ctx context.Context, user *entity.User) (*entity.User, error) {
 	dto := dto.NewUserDto()
-	in := dto.EntityToModel(user)
+	in, err := dto.EntityToModel(user)
+	if err != nil {
+		return nil, err
+	}
 
 	result, err := u.query.SaveUser(ctx, sqlc.SaveUserParams{
 		ID:                   in.ID,
@@ -57,5 +60,5 @@ func (u *UserRepository) Save(ctx context.Context, user *entity.User) (*entity.U
 		return nil, err
 	}
 
-	return dto.ModelToEntity(result), nil
+	return dto.ModelToEntity(result)
 }

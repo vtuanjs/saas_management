@@ -5,6 +5,7 @@ import (
 
 	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain/entity"
 	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/postgres/sqlc"
+	pkgerr "github.com/vtuanjs/saas_management/packages/go/pkg/pkg_err"
 	pkgstring "github.com/vtuanjs/saas_management/packages/go/pkg/pkg_string"
 )
 
@@ -14,17 +15,18 @@ func NewUserDto() *UserDto {
 	return &UserDto{}
 }
 
-func (m *UserDto) ModelToEntity(model *sqlc.User) *entity.User {
+func (m *UserDto) ModelToEntity(model *sqlc.User) (*entity.User, error) {
 	if model == nil {
-		return nil
+		return nil, pkgerr.NewValidationError("ModelToEntity", "model is nil", nil)
 	}
 
 	var avatar *entity.Attachment
 	if model.Avatar != nil {
 		var attachment entity.Attachment
-		if err := json.Unmarshal(model.Avatar, &attachment); err == nil {
-			avatar = &attachment
+		if err := json.Unmarshal(model.Avatar, &attachment); err != nil {
+			return nil, err
 		}
+		avatar = &attachment
 	}
 
 	return &entity.User{
@@ -47,18 +49,20 @@ func (m *UserDto) ModelToEntity(model *sqlc.User) *entity.User {
 		UpdatedByID:          *model.UpdatedByID,
 		DeletedAt:            model.DeletedAt,
 		Version:              model.Version,
-	}
+	}, nil
 }
-func (m *UserDto) EntityToModel(entity *entity.User) *sqlc.User {
+func (m *UserDto) EntityToModel(entity *entity.User) (*sqlc.User, error) {
 	if entity == nil {
-		return nil
+		return nil, pkgerr.NewValidationError("EntityToModel", "entity is nil", nil)
 	}
 
 	var avatar []byte
 	if entity.Avatar != nil {
-		if data, err := json.Marshal(entity.Avatar); err == nil {
-			avatar = data
+		data, err := json.Marshal(entity.Avatar)
+		if err != nil {
+			return nil, err
 		}
+		avatar = data
 	}
 
 	return &sqlc.User{
@@ -76,11 +80,11 @@ func (m *UserDto) EntityToModel(entity *entity.User) *sqlc.User {
 		IsChangePassRequired: entity.IsChangePassRequired,
 		CreatedAt:            entity.CreatedAt,
 		UpdatedAt:            entity.UpdatedAt,
-		CreatedByID:          &entity.CreatedByID,
-		UpdatedByID:          &entity.UpdatedByID,
+		CreatedByID:          pkgstring.PointerString(entity.CreatedByID),
+		UpdatedByID:          pkgstring.PointerString(entity.UpdatedByID),
 		DeletedAt:            entity.DeletedAt,
 		Version:              entity.Version,
-	}
+	}, nil
 }
 
 func (m *UserDto) EntityToResponse(entity *entity.User) {}
