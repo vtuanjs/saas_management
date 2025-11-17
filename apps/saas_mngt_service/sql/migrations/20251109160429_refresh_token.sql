@@ -4,7 +4,7 @@ CREATE TABLE "refresh_tokens" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"token_id" TEXT NOT NULL,
 	"expires_at" TIMESTAMPTZ,
-	"device" JSON NOT NULL DEFAULT '{}'::JSON,
+	"device" JSON,
 	"ip" TEXT NOT NULL DEFAULT '',
 	"user_id" TEXT NOT NULL,
 

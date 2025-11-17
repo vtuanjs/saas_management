@@ -21,6 +21,7 @@ type Attachment struct {
 }
 
 type Device struct {
+	ID        string `json:"id"`
 	Name      string `json:"name"`
 	OS        string `json:"os"`
 	Browser   string `json:"browser"`

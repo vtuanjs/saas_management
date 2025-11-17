@@ -6,7 +6,7 @@ CREATE TABLE "org_sync_templates" (
 	"id" TEXT PRIMARY KEY DEFAULT uuid_generate_v7(),
 	"template_name" TEXT NOT NULL,
 	"template_type" template_type NOT NULL,
-	"template_data" JSON NOT NULL DEFAULT '{}'::JSON,
+	"template_data" JSON,
 	"active" BOOLEAN NOT NULL DEFAULT TRUE,
 
 	"created_at" TIMESTAMPTZ DEFAULT NOW(),

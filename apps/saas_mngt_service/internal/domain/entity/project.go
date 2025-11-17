@@ -6,7 +6,7 @@ type Project struct {
 	ID          string
 	Name        string
 	Code        string
-	ParentID    *string
+	ParentID    string
 	Logo        *Attachment
 	OrgID       string
 	CreatedAt   time.Time

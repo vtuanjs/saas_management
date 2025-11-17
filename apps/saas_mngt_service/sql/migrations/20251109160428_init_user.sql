@@ -7,7 +7,7 @@ CREATE TABLE "users" (
 	"first_name" TEXT NOT NULL,
 	"last_name" TEXT NOT NULL,
 	"name" TEXT NOT NULL,
-	"avatar" JSON NOT NULL DEFAULT '{}'::JSON,
+	"avatar" JSON,
 	"last_login" TIMESTAMPTZ,
 	"ref" TEXT,
 	"is_locked" BOOLEAN NOT NULL DEFAULT FALSE,
