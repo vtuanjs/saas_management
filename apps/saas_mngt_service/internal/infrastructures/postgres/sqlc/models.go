@@ -5,8 +5,163 @@
 package sqlc
 
 import (
+	"database/sql/driver"
+	"fmt"
 	"time"
 )
+
+type TemplateType string
+
+const (
+	TemplateTypePERMISSION TemplateType = "PERMISSION"
+	TemplateTypeROLE       TemplateType = "ROLE"
+)
+
+func (e *TemplateType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = TemplateType(s)
+	case string:
+		*e = TemplateType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for TemplateType: %T", src)
+	}
+	return nil
+}
+
+type NullTemplateType struct {
+	TemplateType TemplateType
+	Valid        bool // Valid is true if TemplateType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullTemplateType) Scan(value interface{}) error {
+	if value == nil {
+		ns.TemplateType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.TemplateType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullTemplateType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.TemplateType), nil
+}
+
+func AllTemplateTypeValues() []TemplateType {
+	return []TemplateType{
+		TemplateTypePERMISSION,
+		TemplateTypeROLE,
+	}
+}
+
+type OrgSyncTemplate struct {
+	ID           string
+	TemplateName string
+	TemplateType TemplateType
+	TemplateData []byte
+	Active       bool
+	CreatedAt    *time.Time
+	UpdatedAt    *time.Time
+	Version      int32
+}
+
+type OrgUser struct {
+	ID          string
+	UserID      string
+	OrgID       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID *string
+	UpdatedByID *string
+	DeletedAt   *time.Time
+	Version     int32
+}
+
+type Organization struct {
+	ID          string
+	Code        string
+	Name        string
+	Logo        []byte
+	IsLocked    bool
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID *string
+	UpdatedByID *string
+	DeletedAt   *time.Time
+	Version     int32
+}
+
+type Permission struct {
+	ID          string
+	Code        string
+	Name        string
+	Description string
+	System      bool
+	OrgID       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID *string
+	UpdatedByID *string
+	DeletedAt   *time.Time
+	Version     int32
+}
+
+type Project struct {
+	ID          string
+	Name        string
+	Code        string
+	ParentID    *string
+	Logo        []byte
+	OrgID       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID *string
+	UpdatedByID *string
+	DeletedAt   *time.Time
+	Version     int32
+}
+
+type RefreshToken struct {
+	ID        string
+	TokenID   string
+	ExpiresAt *time.Time
+	Device    []byte
+	Ip        string
+	UserID    string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Version   int32
+}
+
+type Role struct {
+	ID          string
+	Name        string
+	Description string
+	System      bool
+	OrgID       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID *string
+	UpdatedByID *string
+	DeletedAt   *time.Time
+	Version     int32
+}
+
+type RolePermission struct {
+	ID           string
+	UserID       string
+	RoleID       string
+	PermissionID string
+	ProjectID    string
+	OrgID        string
+	CreatedAt    time.Time
+	CreatedByID  *string
+}
 
 type User struct {
 	ID                   string

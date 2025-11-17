@@ -9,7 +9,23 @@ import (
 )
 
 type Querier interface {
+	GetOrgSyncTemplateByID(ctx context.Context, id string) (*OrgSyncTemplate, error)
+	GetOrgUserByID(ctx context.Context, id string) (*OrgUser, error)
+	GetOrganizationByID(ctx context.Context, id string) (*Organization, error)
+	GetPermissionByID(ctx context.Context, id string) (*Permission, error)
+	GetProjectByID(ctx context.Context, id string) (*Project, error)
+	GetRefreshTokenByID(ctx context.Context, id string) (*RefreshToken, error)
+	GetRoleByID(ctx context.Context, id string) (*Role, error)
+	GetRolePermissionByID(ctx context.Context, id string) (*RolePermission, error)
 	GetUserByID(ctx context.Context, id string) (*User, error)
+	SaveOrgSyncTemplate(ctx context.Context, arg SaveOrgSyncTemplateParams) (*OrgSyncTemplate, error)
+	SaveOrgUser(ctx context.Context, arg SaveOrgUserParams) (*OrgUser, error)
+	SaveOrganization(ctx context.Context, arg SaveOrganizationParams) (*Organization, error)
+	SavePermission(ctx context.Context, arg SavePermissionParams) (*Permission, error)
+	SaveProject(ctx context.Context, arg SaveProjectParams) (*Project, error)
+	SaveRefreshToken(ctx context.Context, arg SaveRefreshTokenParams) (*RefreshToken, error)
+	SaveRole(ctx context.Context, arg SaveRoleParams) (*Role, error)
+	SaveRolePermission(ctx context.Context, arg SaveRolePermissionParams) (*RolePermission, error)
 	SaveUser(ctx context.Context, arg SaveUserParams) (*User, error)
 }
 
