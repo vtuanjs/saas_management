@@ -2,11 +2,6 @@ package entity
 
 import "time"
 
-type UserAvatar struct {
-	ID  string
-	URL string
-}
-
 type User struct {
 	ID                   string
 	Email                string
@@ -14,7 +9,7 @@ type User struct {
 	FirstName            string
 	LastName             string
 	Name                 string
-	Avatar               UserAvatar
+	Avatar               *Attachment
 	LastLogin            *time.Time
 	Ref                  string
 	IsLocked             bool

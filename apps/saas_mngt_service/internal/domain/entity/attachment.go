@@ -9,7 +9,11 @@ const (
 )
 
 type Attachment struct {
-	ID   string
-	Path string
-	Type AttachmentType
+	ID   string `json:"id"`
+	Path string `json:"path"`
+	// FromInternal indicates the attachment was created within the system.
+	// If true, ReturnUrl should be baseURL + Path; otherwise ReturnUrl is just Path.
+	FromInternal bool           `json:"from_internal"`
+	Type         AttachmentType `json:"type"`
+	ReturnUrl    string         `json:"return_url"`
 }
