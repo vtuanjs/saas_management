@@ -23,8 +23,8 @@ func (m *RolePermissionDto) ModelToEntity(model *sqlc.RolePermission) (*entity.R
 		UserID:       model.UserID,
 		RoleID:       model.RoleID,
 		PermissionID: model.PermissionID,
-		ProjectID:    model.ProjectID,
 		OrgID:        model.OrgID,
+		Resources:    model.Resources,
 		CreatedAt:    model.CreatedAt,
 		CreatedByID:  pkgstring.DerefString(model.CreatedByID),
 	}, nil
@@ -39,8 +39,8 @@ func (m *RolePermissionDto) EntityToModel(entity *entity.RolePermission) (*sqlc.
 		UserID:       entity.UserID,
 		RoleID:       entity.RoleID,
 		PermissionID: entity.PermissionID,
-		ProjectID:    entity.ProjectID,
 		OrgID:        entity.OrgID,
+		Resources:    entity.Resources,
 		CreatedAt:    entity.CreatedAt,
 		CreatedByID:  pkgstring.PointerString(entity.CreatedByID),
 	}, nil

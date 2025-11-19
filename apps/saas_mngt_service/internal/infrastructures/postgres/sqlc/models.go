@@ -111,21 +111,6 @@ type Permission struct {
 	Version     int32
 }
 
-type Project struct {
-	ID          string
-	Name        string
-	Code        string
-	ParentID    *string
-	Logo        []byte
-	OrgID       string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	CreatedByID *string
-	UpdatedByID *string
-	DeletedAt   *time.Time
-	Version     int32
-}
-
 type RefreshToken struct {
 	ID        string
 	TokenID   string
@@ -157,8 +142,8 @@ type RolePermission struct {
 	UserID       string
 	RoleID       string
 	PermissionID string
-	ProjectID    string
 	OrgID        string
+	Resources    []string
 	CreatedAt    time.Time
 	CreatedByID  *string
 }

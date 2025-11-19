@@ -11,7 +11,7 @@ import (
 )
 
 const getRolePermissionByID = `-- name: GetRolePermissionByID :one
-SELECT id, user_id, role_id, permission_id, project_id, org_id, created_at, created_by_id FROM role_permissions WHERE id = $1 LIMIT 1
+SELECT id, user_id, role_id, permission_id, org_id, resources, created_at, created_by_id FROM role_permissions WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetRolePermissionByID(ctx context.Context, id string) (*RolePermission, error) {
@@ -22,8 +22,8 @@ func (q *Queries) GetRolePermissionByID(ctx context.Context, id string) (*RolePe
 		&i.UserID,
 		&i.RoleID,
 		&i.PermissionID,
-		&i.ProjectID,
 		&i.OrgID,
+		&i.Resources,
 		&i.CreatedAt,
 		&i.CreatedByID,
 	)
@@ -36,8 +36,8 @@ INSERT INTO role_permissions (
     user_id,
     role_id,
     permission_id,
-    project_id,
     org_id,
+    resources,
     created_at,
     created_by_id
 )
@@ -49,10 +49,9 @@ SET
     user_id = EXCLUDED.user_id,
     role_id = EXCLUDED.role_id,
     permission_id = EXCLUDED.permission_id,
-    project_id = EXCLUDED.project_id,
     org_id = EXCLUDED.org_id,
-    created_by_id = EXCLUDED.created_by_id
-RETURNING id, user_id, role_id, permission_id, project_id, org_id, created_at, created_by_id
+    resources = EXCLUDED.resources
+RETURNING id, user_id, role_id, permission_id, org_id, resources, created_at, created_by_id
 `
 
 type SaveRolePermissionParams struct {
@@ -60,8 +59,8 @@ type SaveRolePermissionParams struct {
 	UserID       string
 	RoleID       string
 	PermissionID string
-	ProjectID    string
 	OrgID        string
+	Resources    []string
 	CreatedAt    time.Time
 	CreatedByID  *string
 }
@@ -72,8 +71,8 @@ func (q *Queries) SaveRolePermission(ctx context.Context, arg SaveRolePermission
 		arg.UserID,
 		arg.RoleID,
 		arg.PermissionID,
-		arg.ProjectID,
 		arg.OrgID,
+		arg.Resources,
 		arg.CreatedAt,
 		arg.CreatedByID,
 	)
@@ -83,8 +82,8 @@ func (q *Queries) SaveRolePermission(ctx context.Context, arg SaveRolePermission
 		&i.UserID,
 		&i.RoleID,
 		&i.PermissionID,
-		&i.ProjectID,
 		&i.OrgID,
+		&i.Resources,
 		&i.CreatedAt,
 		&i.CreatedByID,
 	)

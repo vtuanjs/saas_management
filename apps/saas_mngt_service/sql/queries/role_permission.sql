@@ -7,8 +7,8 @@ INSERT INTO role_permissions (
     user_id,
     role_id,
     permission_id,
-    project_id,
     org_id,
+    resources,
     created_at,
     created_by_id
 )
@@ -20,7 +20,6 @@ SET
     user_id = EXCLUDED.user_id,
     role_id = EXCLUDED.role_id,
     permission_id = EXCLUDED.permission_id,
-    project_id = EXCLUDED.project_id,
     org_id = EXCLUDED.org_id,
-    created_by_id = EXCLUDED.created_by_id
+    resources = EXCLUDED.resources
 RETURNING *;

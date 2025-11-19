@@ -188,28 +188,6 @@ CREATE TABLE public.permissions (
 ALTER TABLE public.permissions OWNER TO postgres;
 
 --
--- Name: projects; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.projects (
-    id text DEFAULT public.uuid_generate_v7() NOT NULL,
-    name text NOT NULL,
-    code text NOT NULL,
-    parent_id text,
-    logo json,
-    org_id text NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by_id text,
-    updated_by_id text,
-    deleted_at timestamp with time zone,
-    version integer DEFAULT 1 NOT NULL
-);
-
-
-ALTER TABLE public.projects OWNER TO postgres;
-
---
 -- Name: refresh_tokens; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -237,8 +215,8 @@ CREATE TABLE public.role_permissions (
     user_id text NOT NULL,
     role_id text NOT NULL,
     permission_id text NOT NULL,
-    project_id text NOT NULL,
     org_id text NOT NULL,
+    resources text[],
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by_id text
 );
@@ -337,14 +315,6 @@ ALTER TABLE ONLY public.permissions
 
 
 --
--- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.projects
-    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
-
-
---
 -- Name: refresh_tokens refresh_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -412,27 +382,6 @@ CREATE INDEX permissions_org_id_idx ON public.permissions USING btree (org_id);
 
 
 --
--- Name: projects_code_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX projects_code_idx ON public.projects USING btree (code, org_id, deleted_at);
-
-
---
--- Name: projects_org_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX projects_org_id_idx ON public.projects USING btree (org_id);
-
-
---
--- Name: projects_parent_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX projects_parent_id_idx ON public.projects USING btree (parent_id);
-
-
---
 -- Name: refresh_tokens_user_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -450,7 +399,7 @@ CREATE INDEX role_permissions_role_id_idx ON public.role_permissions USING btree
 -- Name: role_permissions_unique_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX role_permissions_unique_idx ON public.role_permissions USING btree (user_id, permission_id, role_id, project_id, org_id);
+CREATE UNIQUE INDEX role_permissions_unique_idx ON public.role_permissions USING btree (user_id, permission_id, role_id, org_id);
 
 
 --
@@ -492,22 +441,6 @@ ALTER TABLE ONLY public.permissions
 
 
 --
--- Name: projects projects_org_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.projects
-    ADD CONSTRAINT projects_org_id_fkey FOREIGN KEY (org_id) REFERENCES public.organizations(id);
-
-
---
--- Name: projects projects_parent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.projects
-    ADD CONSTRAINT projects_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES public.projects(id);
-
-
---
 -- Name: refresh_tokens refresh_tokens_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -529,14 +462,6 @@ ALTER TABLE ONLY public.role_permissions
 
 ALTER TABLE ONLY public.role_permissions
     ADD CONSTRAINT role_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES public.permissions(id);
-
-
---
--- Name: role_permissions role_permissions_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.role_permissions
-    ADD CONSTRAINT role_permissions_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --

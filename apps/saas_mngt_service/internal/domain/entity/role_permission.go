@@ -7,8 +7,8 @@ type RolePermission struct {
 	UserID       string
 	RoleID       string
 	PermissionID string
-	ProjectID    string
 	OrgID        string
+	Resources    []string
 	CreatedAt    time.Time
 	CreatedByID  string
 }
