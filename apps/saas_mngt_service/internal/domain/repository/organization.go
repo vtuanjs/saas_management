@@ -1,3 +1,4 @@
+//go:generate sh -c "mockgen -source=$GOFILE -destination=mock/$(basename $GOFILE .go)_test.go -package=mock"
 package repository
 
 import (

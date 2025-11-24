@@ -33,6 +33,15 @@ Install Go tools and set up necessary permissions by running:
 make setup
 ```
 
+### 4. Set go tool path
+
+Add this line to end of file `~/.zshrc` or `~/.bashrc`, or `~/.profile`
+```
+export PATH=$PATH:$(go env GOPATH)/bin
+```
+
+Apply change: `source ~/.zshrc` or `source ~/.bashrc` or `source ~/.profile`
+
 ## Development
 
 ### Running the Application

@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "entity",
+    srcs = [
+        "org_sync_template.go",
+        "org_user.go",
+        "organization.go",
+        "permission.go",
+        "project.go",
+        "refresh_token.go",
+        "role.go",
+        "role_permission.go",
+        "shared.go",
+        "user.go",
+    ],
+    importpath = "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/domain/entity",
+    visibility = ["//:__subpackages__"],
+)
