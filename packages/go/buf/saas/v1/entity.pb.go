@@ -22,85 +22,162 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type UserSalutationType int32
+type AttachmentType int32
 
 const (
-	UserSalutationType_USER_SALUTATION_TYPE_UNSPECIFIED UserSalutationType = 0
-	UserSalutationType_USER_SALUTATION_TYPE_MR          UserSalutationType = 1
-	UserSalutationType_USER_SALUTATION_TYPE_MRS         UserSalutationType = 2
-	UserSalutationType_USER_SALUTATION_TYPE_MS          UserSalutationType = 3
+	AttachmentType_ATTACHMENT_TYPE_UNSPECIFIED AttachmentType = 0
+	AttachmentType_ATTACHMENT_TYPE_PDF         AttachmentType = 1
+	AttachmentType_ATTACHMENT_TYPE_IMAGE       AttachmentType = 2
+	AttachmentType_ATTACHMENT_TYPE_VIDEO       AttachmentType = 3
 )
 
-// Enum value maps for UserSalutationType.
+// Enum value maps for AttachmentType.
 var (
-	UserSalutationType_name = map[int32]string{
-		0: "USER_SALUTATION_TYPE_UNSPECIFIED",
-		1: "USER_SALUTATION_TYPE_MR",
-		2: "USER_SALUTATION_TYPE_MRS",
-		3: "USER_SALUTATION_TYPE_MS",
+	AttachmentType_name = map[int32]string{
+		0: "ATTACHMENT_TYPE_UNSPECIFIED",
+		1: "ATTACHMENT_TYPE_PDF",
+		2: "ATTACHMENT_TYPE_IMAGE",
+		3: "ATTACHMENT_TYPE_VIDEO",
 	}
-	UserSalutationType_value = map[string]int32{
-		"USER_SALUTATION_TYPE_UNSPECIFIED": 0,
-		"USER_SALUTATION_TYPE_MR":          1,
-		"USER_SALUTATION_TYPE_MRS":         2,
-		"USER_SALUTATION_TYPE_MS":          3,
+	AttachmentType_value = map[string]int32{
+		"ATTACHMENT_TYPE_UNSPECIFIED": 0,
+		"ATTACHMENT_TYPE_PDF":         1,
+		"ATTACHMENT_TYPE_IMAGE":       2,
+		"ATTACHMENT_TYPE_VIDEO":       3,
 	}
 )
 
-func (x UserSalutationType) Enum() *UserSalutationType {
-	p := new(UserSalutationType)
+func (x AttachmentType) Enum() *AttachmentType {
+	p := new(AttachmentType)
 	*p = x
 	return p
 }
 
-func (x UserSalutationType) String() string {
+func (x AttachmentType) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (UserSalutationType) Descriptor() protoreflect.EnumDescriptor {
+func (AttachmentType) Descriptor() protoreflect.EnumDescriptor {
 	return file_saas_v1_entity_proto_enumTypes[0].Descriptor()
 }
 
-func (UserSalutationType) Type() protoreflect.EnumType {
+func (AttachmentType) Type() protoreflect.EnumType {
 	return &file_saas_v1_entity_proto_enumTypes[0]
 }
 
-func (x UserSalutationType) Number() protoreflect.EnumNumber {
+func (x AttachmentType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use UserSalutationType.Descriptor instead.
-func (UserSalutationType) EnumDescriptor() ([]byte, []int) {
+// Deprecated: Use AttachmentType.Descriptor instead.
+func (AttachmentType) EnumDescriptor() ([]byte, []int) {
 	return file_saas_v1_entity_proto_rawDescGZIP(), []int{0}
 }
 
+type Attachment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	FromInternal  bool                   `protobuf:"varint,3,opt,name=from_internal,json=fromInternal,proto3" json:"from_internal,omitempty"`
+	Type          AttachmentType         `protobuf:"varint,4,opt,name=type,proto3,enum=saas.v1.AttachmentType" json:"type,omitempty"`
+	Ref           string                 `protobuf:"bytes,5,opt,name=ref,proto3" json:"ref,omitempty"`
+	ReturnUrl     string                 `protobuf:"bytes,6,opt,name=return_url,json=returnUrl,proto3" json:"return_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Attachment) Reset() {
+	*x = Attachment{}
+	mi := &file_saas_v1_entity_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Attachment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Attachment) ProtoMessage() {}
+
+func (x *Attachment) ProtoReflect() protoreflect.Message {
+	mi := &file_saas_v1_entity_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Attachment.ProtoReflect.Descriptor instead.
+func (*Attachment) Descriptor() ([]byte, []int) {
+	return file_saas_v1_entity_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Attachment) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Attachment) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *Attachment) GetFromInternal() bool {
+	if x != nil {
+		return x.FromInternal
+	}
+	return false
+}
+
+func (x *Attachment) GetType() AttachmentType {
+	if x != nil {
+		return x.Type
+	}
+	return AttachmentType_ATTACHMENT_TYPE_UNSPECIFIED
+}
+
+func (x *Attachment) GetRef() string {
+	if x != nil {
+		return x.Ref
+	}
+	return ""
+}
+
+func (x *Attachment) GetReturnUrl() string {
+	if x != nil {
+		return x.ReturnUrl
+	}
+	return ""
+}
+
 type User struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	Id                   string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email                string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Username             string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	Salutation           UserSalutationType     `protobuf:"varint,4,opt,name=salutation,proto3,enum=saas.v1.UserSalutationType" json:"salutation,omitempty"`
-	Phone                string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
-	FirstName            string                 `protobuf:"bytes,6,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName             string                 `protobuf:"bytes,7,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	Name                 string                 `protobuf:"bytes,8,opt,name=name,proto3" json:"name,omitempty"`
-	AvatarId             string                 `protobuf:"bytes,9,opt,name=avatar_id,json=avatarId,proto3" json:"avatar_id,omitempty"`
-	LastLogin            *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=last_login,json=lastLogin,proto3" json:"last_login,omitempty"`
-	RefId                string                 `protobuf:"bytes,11,opt,name=ref_id,json=refId,proto3" json:"ref_id,omitempty"`
-	IsLocked             bool                   `protobuf:"varint,12,opt,name=is_locked,json=isLocked,proto3" json:"is_locked,omitempty"`
-	IsActivated          bool                   `protobuf:"varint,13,opt,name=is_activated,json=isActivated,proto3" json:"is_activated,omitempty"`
-	IsAdmin              bool                   `protobuf:"varint,14,opt,name=is_admin,json=isAdmin,proto3" json:"is_admin,omitempty"`
-	IsChangePassRequired bool                   `protobuf:"varint,15,opt,name=is_change_pass_required,json=isChangePassRequired,proto3" json:"is_change_pass_required,omitempty"`
-	CreatedAt            *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt            *timestamppb.Timestamp `protobuf:"bytes,17,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	DeletedAt            *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Phone         string                 `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
+	FirstName     string                 `protobuf:"bytes,4,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName      string                 `protobuf:"bytes,5,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	Name          string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
+	Avatar        *Attachment            `protobuf:"bytes,7,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	LastLogin     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=last_login,json=lastLogin,proto3" json:"last_login,omitempty"`
+	Ref           string                 `protobuf:"bytes,9,opt,name=ref,proto3" json:"ref,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_saas_v1_entity_proto_msgTypes[0]
+	mi := &file_saas_v1_entity_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -112,7 +189,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_saas_v1_entity_proto_msgTypes[0]
+	mi := &file_saas_v1_entity_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -125,7 +202,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_saas_v1_entity_proto_rawDescGZIP(), []int{0}
+	return file_saas_v1_entity_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *User) GetId() string {
@@ -140,20 +217,6 @@ func (x *User) GetEmail() string {
 		return x.Email
 	}
 	return ""
-}
-
-func (x *User) GetUsername() string {
-	if x != nil {
-		return x.Username
-	}
-	return ""
-}
-
-func (x *User) GetSalutation() UserSalutationType {
-	if x != nil {
-		return x.Salutation
-	}
-	return UserSalutationType_USER_SALUTATION_TYPE_UNSPECIFIED
 }
 
 func (x *User) GetPhone() string {
@@ -184,11 +247,11 @@ func (x *User) GetName() string {
 	return ""
 }
 
-func (x *User) GetAvatarId() string {
+func (x *User) GetAvatar() *Attachment {
 	if x != nil {
-		return x.AvatarId
+		return x.Avatar
 	}
-	return ""
+	return nil
 }
 
 func (x *User) GetLastLogin() *timestamppb.Timestamp {
@@ -198,39 +261,11 @@ func (x *User) GetLastLogin() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *User) GetRefId() string {
+func (x *User) GetRef() string {
 	if x != nil {
-		return x.RefId
+		return x.Ref
 	}
 	return ""
-}
-
-func (x *User) GetIsLocked() bool {
-	if x != nil {
-		return x.IsLocked
-	}
-	return false
-}
-
-func (x *User) GetIsActivated() bool {
-	if x != nil {
-		return x.IsActivated
-	}
-	return false
-}
-
-func (x *User) GetIsAdmin() bool {
-	if x != nil {
-		return x.IsAdmin
-	}
-	return false
-}
-
-func (x *User) GetIsChangePassRequired() bool {
-	if x != nil {
-		return x.IsChangePassRequired
-	}
-	return false
 }
 
 func (x *User) GetCreatedAt() *timestamppb.Timestamp {
@@ -247,50 +282,42 @@ func (x *User) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *User) GetDeletedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.DeletedAt
-	}
-	return nil
-}
-
 var File_saas_v1_entity_proto protoreflect.FileDescriptor
 
 const file_saas_v1_entity_proto_rawDesc = "" +
 	"\n" +
-	"\x14saas/v1/entity.proto\x12\asaas.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9d\x05\n" +
+	"\x14saas/v1/entity.proto\x12\asaas.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb3\x01\n" +
+	"\n" +
+	"Attachment\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x12#\n" +
+	"\rfrom_internal\x18\x03 \x01(\bR\ffromInternal\x12+\n" +
+	"\x04type\x18\x04 \x01(\x0e2\x17.saas.v1.AttachmentTypeR\x04type\x12\x10\n" +
+	"\x03ref\x18\x05 \x01(\tR\x03ref\x12\x1d\n" +
+	"\n" +
+	"return_url\x18\x06 \x01(\tR\treturnUrl\"\x82\x03\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\busername\x18\x03 \x01(\tR\busername\x12;\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x14\n" +
+	"\x05phone\x18\x03 \x01(\tR\x05phone\x12\x1d\n" +
 	"\n" +
-	"salutation\x18\x04 \x01(\x0e2\x1b.saas.v1.UserSalutationTypeR\n" +
-	"salutation\x12\x14\n" +
-	"\x05phone\x18\x05 \x01(\tR\x05phone\x12\x1d\n" +
+	"first_name\x18\x04 \x01(\tR\tfirstName\x12\x1b\n" +
+	"\tlast_name\x18\x05 \x01(\tR\blastName\x12\x12\n" +
+	"\x04name\x18\x06 \x01(\tR\x04name\x12+\n" +
+	"\x06avatar\x18\a \x01(\v2\x13.saas.v1.AttachmentR\x06avatar\x129\n" +
 	"\n" +
-	"first_name\x18\x06 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\a \x01(\tR\blastName\x12\x12\n" +
-	"\x04name\x18\b \x01(\tR\x04name\x12\x1b\n" +
-	"\tavatar_id\x18\t \x01(\tR\bavatarId\x129\n" +
+	"last_login\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tlastLogin\x12\x10\n" +
+	"\x03ref\x18\t \x01(\tR\x03ref\x129\n" +
 	"\n" +
-	"last_login\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tlastLogin\x12\x15\n" +
-	"\x06ref_id\x18\v \x01(\tR\x05refId\x12\x1b\n" +
-	"\tis_locked\x18\f \x01(\bR\bisLocked\x12!\n" +
-	"\fis_activated\x18\r \x01(\bR\visActivated\x12\x19\n" +
-	"\bis_admin\x18\x0e \x01(\bR\aisAdmin\x125\n" +
-	"\x17is_change_pass_required\x18\x0f \x01(\bR\x14isChangePassRequired\x129\n" +
+	"created_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"created_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\n" +
-	"updated_at\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
-	"\n" +
-	"deleted_at\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt*\x92\x01\n" +
-	"\x12UserSalutationType\x12$\n" +
-	" USER_SALUTATION_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n" +
-	"\x17USER_SALUTATION_TYPE_MR\x10\x01\x12\x1c\n" +
-	"\x18USER_SALUTATION_TYPE_MRS\x10\x02\x12\x1b\n" +
-	"\x17USER_SALUTATION_TYPE_MS\x10\x03B\x93\x01\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt*\x80\x01\n" +
+	"\x0eAttachmentType\x12\x1f\n" +
+	"\x1bATTACHMENT_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13ATTACHMENT_TYPE_PDF\x10\x01\x12\x19\n" +
+	"\x15ATTACHMENT_TYPE_IMAGE\x10\x02\x12\x19\n" +
+	"\x15ATTACHMENT_TYPE_VIDEO\x10\x03B\x93\x01\n" +
 	"\vcom.saas.v1B\vEntityProtoP\x01Z:github.com/vtuanjs/saas_management/packages/go/buf/saas/v1\xa2\x02\x03SXX\xaa\x02\aSaas.V1\xca\x02\aSaas\\V1\xe2\x02\x13Saas\\V1\\GPBMetadata\xea\x02\bSaas::V1b\x06proto3"
 
 var (
@@ -306,18 +333,19 @@ func file_saas_v1_entity_proto_rawDescGZIP() []byte {
 }
 
 var file_saas_v1_entity_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_saas_v1_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_saas_v1_entity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_saas_v1_entity_proto_goTypes = []any{
-	(UserSalutationType)(0),       // 0: saas.v1.UserSalutationType
-	(*User)(nil),                  // 1: saas.v1.User
-	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
+	(AttachmentType)(0),           // 0: saas.v1.AttachmentType
+	(*Attachment)(nil),            // 1: saas.v1.Attachment
+	(*User)(nil),                  // 2: saas.v1.User
+	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
 var file_saas_v1_entity_proto_depIdxs = []int32{
-	0, // 0: saas.v1.User.salutation:type_name -> saas.v1.UserSalutationType
-	2, // 1: saas.v1.User.last_login:type_name -> google.protobuf.Timestamp
-	2, // 2: saas.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	2, // 3: saas.v1.User.updated_at:type_name -> google.protobuf.Timestamp
-	2, // 4: saas.v1.User.deleted_at:type_name -> google.protobuf.Timestamp
+	0, // 0: saas.v1.Attachment.type:type_name -> saas.v1.AttachmentType
+	1, // 1: saas.v1.User.avatar:type_name -> saas.v1.Attachment
+	3, // 2: saas.v1.User.last_login:type_name -> google.protobuf.Timestamp
+	3, // 3: saas.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	3, // 4: saas.v1.User.updated_at:type_name -> google.protobuf.Timestamp
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -336,7 +364,7 @@ func file_saas_v1_entity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_saas_v1_entity_proto_rawDesc), len(file_saas_v1_entity_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

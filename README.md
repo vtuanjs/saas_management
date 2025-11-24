@@ -48,9 +48,18 @@ Apply change: `source ~/.zshrc` or `source ~/.bashrc` or `source ~/.profile`
 
 -   **Start all services:** `make up-all`
 -   **Stop all services:** `make down-all`
--   **Generate all files** (tidy, wire, mock, proto, ent): `make gen`
+-   **Generate files**
+	- Proto: `make -C ./apps/saas_mngt_service gen-proto`
+	- Wire (Dependency Injection): `make -C ./apps/saas_mngt_service gen-wire`
+	- Mock: `make -C ./apps/saas_mngt_service gen-mock`
+	- SQL code to Go: `make -C ./apps/saas_mngt_service gen-query`
+	- Migration file: `make -C ./apps/saas_mngt_service gen-migration`
+	- Seed file: `make -C ./apps/saas_mngt_service gen-seed`
+	- Ad-hoc file: `make -C ./apps/saas_mngt_service gen-ad-hoc`
 
 See the `Makefile` for a complete list of commands.
+
+Note: Seed files are useful for initializing local data, while migrations are intended for server environments.
 
 ### Generating Code
 

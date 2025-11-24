@@ -25,7 +25,6 @@ type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
-	Salutation    UserSalutationType     `protobuf:"varint,3,opt,name=salutation,proto3,enum=saas.v1.UserSalutationType" json:"salutation,omitempty"`
 	FirstName     string                 `protobuf:"bytes,4,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	LastName      string                 `protobuf:"bytes,5,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
 	Name          string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
@@ -75,13 +74,6 @@ func (x *RegisterRequest) GetUsername() string {
 		return x.Username
 	}
 	return ""
-}
-
-func (x *RegisterRequest) GetSalutation() UserSalutationType {
-	if x != nil {
-		return x.Salutation
-	}
-	return UserSalutationType_USER_SALUTATION_TYPE_UNSPECIFIED
 }
 
 func (x *RegisterRequest) GetFirstName() string {
@@ -153,13 +145,10 @@ var File_saas_v1_user_proto protoreflect.FileDescriptor
 
 const file_saas_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12saas/v1/user.proto\x12\asaas.v1\x1a\x14saas/v1/entity.proto\"\xd0\x01\n" +
+	"\x12saas/v1/user.proto\x12\asaas.v1\x1a\x14saas/v1/entity.proto\"\x93\x01\n" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12;\n" +
-	"\n" +
-	"salutation\x18\x03 \x01(\x0e2\x1b.saas.v1.UserSalutationTypeR\n" +
-	"salutation\x12\x1d\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x1d\n" +
 	"\n" +
 	"first_name\x18\x04 \x01(\tR\tfirstName\x12\x1b\n" +
 	"\tlast_name\x18\x05 \x01(\tR\blastName\x12\x12\n" +
@@ -186,19 +175,17 @@ var file_saas_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_saas_v1_user_proto_goTypes = []any{
 	(*RegisterRequest)(nil),  // 0: saas.v1.RegisterRequest
 	(*RegisterResponse)(nil), // 1: saas.v1.RegisterResponse
-	(UserSalutationType)(0),  // 2: saas.v1.UserSalutationType
-	(*User)(nil),             // 3: saas.v1.User
+	(*User)(nil),             // 2: saas.v1.User
 }
 var file_saas_v1_user_proto_depIdxs = []int32{
-	2, // 0: saas.v1.RegisterRequest.salutation:type_name -> saas.v1.UserSalutationType
-	3, // 1: saas.v1.RegisterResponse.user:type_name -> saas.v1.User
-	0, // 2: saas.v1.UserAPI.Register:input_type -> saas.v1.RegisterRequest
-	1, // 3: saas.v1.UserAPI.Register:output_type -> saas.v1.RegisterResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 0: saas.v1.RegisterResponse.user:type_name -> saas.v1.User
+	0, // 1: saas.v1.UserAPI.Register:input_type -> saas.v1.RegisterRequest
+	1, // 2: saas.v1.UserAPI.Register:output_type -> saas.v1.RegisterResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_saas_v1_user_proto_init() }
