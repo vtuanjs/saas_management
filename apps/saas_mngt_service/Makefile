@@ -16,17 +16,11 @@ DB_PASSWORD ?= postgres
 DB_SCHEMA ?= public
 DB_NAME ?= saas_mngt
 
-.PHONY: setup buf-update buf-gen buf-lint buf-breaking env-decrypt env-encrypt build up down debug check migrate-up migrate-down migrate-add migrate-remove migrate-status migrate-hash migrate-gen migrate-rebase ad-hoc-up ad-hoc-down ad-hoc-add seed-up seed-add seed-down mod-tidy wire %
+.PHONY: setup buf-update buf-gen buf-lint buf-breaking env-decrypt env-encrypt build up down debug check migrate-up migrate-down migrate-add migrate-remove migrate-status migrate-hash migrate-gen migrate-rebase ad-hoc-up ad-hoc-down ad-hoc-add seed-up seed-add seed-down mod-tidy %
 
 # gen
 gen-proto:
 	buf generate
-
-gen-wire:
-	@echo "\033[0;32m Generating wire...\033[0m"
-	wire ./wire
-	@echo "\033[0;32m Build after code generation...\033[0m"
-	make build
 
 gen-mock:
 	@echo "\033[0;32m Generating mocks...\033[0m"

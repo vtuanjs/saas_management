@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package saas.v1;
+
+option go_package = "github.com/vtuanjs/saas_management/packages/go/buf/saas/v1";
+
+message LoginWithEmailRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginWithEmailResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message LoginWithCodeRequest {
+  string code = 1;
+}
+
+message LoginWithCodeResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message LogoutRequest {
+  string user_id = 1;
+}
+
+message LogoutResponse {
+  bool success = 1;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+service AuthAPI {
+  rpc LoginWithEmail(LoginWithEmailRequest) returns (LoginWithEmailResponse);
+  rpc LoginWithCode(LoginWithCodeRequest) returns (LoginWithCodeResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}

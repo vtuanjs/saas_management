@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"sync"
 	"time"
 
 	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/core"
@@ -22,42 +21,35 @@ type redisCache struct {
 	locker *redislock.Client
 }
 
-var (
-	singleton *redisCache
-	once      sync.Once
-)
-
 func NewRedisCache(cfg *core.Config) core.Cache {
-	once.Do(func() {
-		redisCfg := cfg.Redis
+	redisCfg := cfg.Redis
 
-		client := redis.NewClient(&redis.Options{
-			Addr:     fmt.Sprintf("%s:%d", redisCfg.Host, redisCfg.Port),
-			Password: redisCfg.Password,
-			DB:       redisCfg.DB,
-		})
-
-		err := pkgretry.WithRetry(context.Background(), func() error {
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			defer cancel()
-			_, err := client.Ping(ctx).Result()
-			if err != nil {
-				return pkgerr.NewRetryableError("ping_redis", "failed to ping redis", err)
-			}
-			return nil
-		}, 10, 1*time.Second)
-
-		if err != nil {
-			pkgmust.Check("redis connection", err)
-		}
-
-		fmt.Printf("Connecting to Redis at %s:%d\n", redisCfg.Host, redisCfg.Port)
-		singleton = &redisCache{
-			client: client,
-			locker: redislock.New(client),
-		}
+	client := redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%d", redisCfg.Host, redisCfg.Port),
+		Password: redisCfg.Password,
+		DB:       redisCfg.DB,
 	})
-	return singleton
+
+	err := pkgretry.WithRetry(context.Background(), func() error {
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_, err := client.Ping(ctx).Result()
+		if err != nil {
+			return pkgerr.NewRetryableError("ping_redis", "failed to ping redis", err)
+		}
+		return nil
+	}, 10, 1*time.Second)
+
+	if err != nil {
+		pkgmust.Check("redis connection", err)
+	}
+
+	fmt.Printf("Connecting to Redis at %s:%d\n", redisCfg.Host, redisCfg.Port)
+
+	return &redisCache{
+		client: client,
+		locker: redislock.New(client),
+	}
 }
 
 func (c *redisCache) Get(ctx context.Context, key string) (string, error) {

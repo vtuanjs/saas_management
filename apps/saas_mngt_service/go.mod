@@ -6,7 +6,6 @@ replace github.com/vtuanjs/saas_management/packages/go => ../../packages/go
 
 require (
 	github.com/bsm/redislock v0.9.4
-	github.com/google/wire v0.6.0
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/vtuanjs/saas_management/packages/go v0.0.0-00010101000000-000000000000
 	go.uber.org/mock v0.6.0

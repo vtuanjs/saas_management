@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/wire"
-
+	"github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/infrastructures/viper"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
@@ -21,9 +20,9 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	config := wire.InitConfig()
-	wire.InitLogger()
-	wire.InitDistributedCache()
+	config := viper.NewConfig()
+	// logger := zap.NewLogger(config)
+	// redis := redis.NewRedisCache(config)
 
 	// userCommand := wire.InitUserCommand()
 	// userQuery := wire.InitUserQuery()

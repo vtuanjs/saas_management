@@ -3,7 +3,6 @@ package zap
 import (
 	"context"
 	"os"
-	"sync"
 
 	system "github.com/vtuanjs/saas_management/apps/saas_mngt_service/internal/core"
 
@@ -36,45 +35,37 @@ func (l *loggerZap) Fatal(_ context.Context, msg string, err error) {
 	l.Logger.Fatal(msg, zap.Error(err))
 }
 
-var (
-	singleton *loggerZap
-	once      sync.Once
-)
-
 func NewLogger(cfg *system.Config) system.Logger {
-	once.Do(func() {
-		logCfg := cfg.Logger
-		var level zapcore.Level
-		switch logCfg.Level {
-		case "debug":
-			level = zapcore.DebugLevel
-		case "info":
-			level = zapcore.InfoLevel
-		case "warn":
-			level = zapcore.WarnLevel
-		case "error":
-			level = zapcore.ErrorLevel
-		default:
-			level = zapcore.InfoLevel
-		}
+	logCfg := cfg.Logger
+	var level zapcore.Level
+	switch logCfg.Level {
+	case "debug":
+		level = zapcore.DebugLevel
+	case "info":
+		level = zapcore.InfoLevel
+	case "warn":
+		level = zapcore.WarnLevel
+	case "error":
+		level = zapcore.ErrorLevel
+	default:
+		level = zapcore.InfoLevel
+	}
 
-		encoder := getEncoderLog()
-		hook := lumberjack.Logger{
-			Filename:   logCfg.Filename,
-			MaxSize:    logCfg.MaxSize,
-			MaxBackups: logCfg.MaxBackups,
-			MaxAge:     logCfg.MaxAge,
-			Compress:   logCfg.Compress,
-		}
-		core := zapcore.NewCore(
-			encoder,
-			zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook)),
-			level,
-		)
+	encoder := getEncoderLog()
+	hook := lumberjack.Logger{
+		Filename:   logCfg.Filename,
+		MaxSize:    logCfg.MaxSize,
+		MaxBackups: logCfg.MaxBackups,
+		MaxAge:     logCfg.MaxAge,
+		Compress:   logCfg.Compress,
+	}
+	core := zapcore.NewCore(
+		encoder,
+		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook)),
+		level,
+	)
 
-		singleton = &loggerZap{zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.ErrorLevel))}
-	})
-	return singleton
+	return &loggerZap{zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.ErrorLevel))}
 }
 
 func getEncoderLog() zapcore.Encoder {
