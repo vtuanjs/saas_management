@@ -3,7 +3,7 @@ services:
     image: saas_mngt_service:local
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: local.Dockerfile
     volumes:
       - .:/saas_management/apps/saas_mngt_service:rw
       - ../../packages:/saas_management/packages
