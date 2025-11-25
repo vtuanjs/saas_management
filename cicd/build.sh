@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_NAME="saas_mngt_service"
+APP_NAME=${APP_NAME:-saas_mngt_service}
 
 docker build -t $APP_NAME -f apps/$APP_NAME/Dockerfile .
 
