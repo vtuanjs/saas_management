@@ -23,9 +23,6 @@ services:
       - |
         if [ "${TOOL}" = "BUILD" ]; then
           go mod tidy
-          bazel --output_base=/root/.cache/bazel-run mod tidy
-          bazel --output_base=/root/.cache/bazel-run run gazelle
-          bazel --output_base=/root/.cache/bazel-run build main
           exit 0
         fi
 
@@ -54,16 +51,13 @@ services:
         chmod 777 .env
 
         if [ "${DEBUG}" = "true" ]; then
-          reflex -r '(\.go$|go\.mod)' -R '.build/' -s -- sh -c "
-            bazel --output_base=/root/.cache/bazel-run run --compilation_mode=dbg gazelle
-            bazel --output_base=/root/.cache/bazel-run build --compilation_mode=dbg main
-            # bazel --output_base=/root/.cache/bazel-run shutdown &&
-            dlv exec .build/bazel-bin/cmd/cmd_/cmd --listen=:40000 --headless --api-version=2 --accept-multiclient --continue --log
-          "
+          reflex -r '(\.go$|go\.mod)' -s -- sh -c '
+            go build -gcflags="all=-N -l" -o .build/debug ./cmd/main.go
+            dlv exec .build/debug --listen=:40000 --headless --api-version=2 --accept-multiclient --continue --log
+          '
         else
-          bazel --output_base=/root/.cache/bazel-run build main
-          bazel --output_base=/root/.cache/bazel-run shutdown
-          .build/bazel-bin/cmd/cmd_/cmd
+          go build -o .build/main ./cmd/main.go
+          .build/main
         fi
     networks:
       - local-monorepo
