@@ -28,7 +28,7 @@ func main() {
 	// userQuery := wire.InitUserQuery()
 	// userAPI := wire.InitUserAPIHandler(userCommand, userQuery)
 
-	fmt.Print("Config loaded: ", config.Server.Port, "\n")
+	fmt.Print("Config loaded::: ", config.Server.Port, "\n")
 
 	// mux.Handle(saasv1connect.NewUserAPIHandler(userAPI))
 
