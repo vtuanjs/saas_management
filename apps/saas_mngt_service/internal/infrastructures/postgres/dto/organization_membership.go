@@ -13,7 +13,7 @@ func NewOrganizationMembershipDto() *OrganizationMembershipDto {
 	return &OrganizationMembershipDto{}
 }
 
-func (m *OrganizationMembershipDto) ModelToEntity(model *sqlc.OrgUser) (*entity.OrganizationMembership, error) {
+func (m *OrganizationMembershipDto) ModelToEntity(model *sqlc.OrganizationMembership) (*entity.OrganizationMembership, error) {
 	if model == nil {
 		return nil, pkgerr.NewValidationError("ModelToEntity", "model is nil", nil)
 	}
@@ -30,12 +30,12 @@ func (m *OrganizationMembershipDto) ModelToEntity(model *sqlc.OrgUser) (*entity.
 		Version:     model.Version,
 	}, nil
 }
-func (m *OrganizationMembershipDto) EntityToModel(entity *entity.OrganizationMembership) (*sqlc.OrgUser, error) {
+func (m *OrganizationMembershipDto) EntityToModel(entity *entity.OrganizationMembership) (*sqlc.OrganizationMembership, error) {
 	if entity == nil {
 		return nil, pkgerr.NewValidationError("EntityToModel", "entity is nil", nil)
 	}
 
-	return &sqlc.OrgUser{
+	return &sqlc.OrganizationMembership{
 		ID:          entity.ID,
 		UserID:      entity.UserID,
 		OrgID:       entity.OrgID,

@@ -4,7 +4,6 @@ SELECT * FROM permissions WHERE id = $1 LIMIT 1;
 -- name: SavePermission :one
 INSERT INTO permissions (
     id,
-    code,
     name,
     description,
     system,
@@ -16,11 +15,10 @@ INSERT INTO permissions (
     deleted_at
 )
 VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 )
 ON CONFLICT (id) DO UPDATE
 SET
-    code = EXCLUDED.code,
     name = EXCLUDED.name,
     description = EXCLUDED.description,
     system = EXCLUDED.system,

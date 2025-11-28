@@ -25,15 +25,13 @@ gen-proto:
 gen-mock:
 	@echo "\033[0;32m Generating mocks...\033[0m"
 	go generate ./internal/...
-	@echo "\033[0;32m Build after code generation...\033[0m"
-	make build
 
 gen-query:
 	@echo "\033[0;32m Generating sqlc query...\033[0m"
 	@sqlc generate
-# 	@echo "\033[0;32m Build after code generation...\033[0m"
-#	You can manually build after generation if needed
-# 	@make build
+	@echo "\033[0;32m Generating mocks...\033[0m"
+	@mockgen -source=./internal/infrastructures/postgres/sqlc/querier.go -destination=./internal/infrastructures/postgres/sqlc/mock/querier_test.go -package=mock
+
 
 gen-migration:
 	@echo "Adding new migration..."

@@ -70,3 +70,57 @@ func (mr *MockOrganizationRepositoryMockRecorder) Save(ctx, organization any) *g
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockOrganizationRepository)(nil).Save), ctx, organization)
 }
+
+// MockOrganizationMembershipRepository is a mock of OrganizationMembershipRepository interface.
+type MockOrganizationMembershipRepository struct {
+	ctrl     *gomock.Controller
+	recorder *MockOrganizationMembershipRepositoryMockRecorder
+	isgomock struct{}
+}
+
+// MockOrganizationMembershipRepositoryMockRecorder is the mock recorder for MockOrganizationMembershipRepository.
+type MockOrganizationMembershipRepositoryMockRecorder struct {
+	mock *MockOrganizationMembershipRepository
+}
+
+// NewMockOrganizationMembershipRepository creates a new mock instance.
+func NewMockOrganizationMembershipRepository(ctrl *gomock.Controller) *MockOrganizationMembershipRepository {
+	mock := &MockOrganizationMembershipRepository{ctrl: ctrl}
+	mock.recorder = &MockOrganizationMembershipRepositoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockOrganizationMembershipRepository) EXPECT() *MockOrganizationMembershipRepositoryMockRecorder {
+	return m.recorder
+}
+
+// FindByID mocks base method.
+func (m *MockOrganizationMembershipRepository) FindByID(ctx context.Context, id string) (*entity.OrganizationMembership, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByID", ctx, id)
+	ret0, _ := ret[0].(*entity.OrganizationMembership)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByID indicates an expected call of FindByID.
+func (mr *MockOrganizationMembershipRepositoryMockRecorder) FindByID(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockOrganizationMembershipRepository)(nil).FindByID), ctx, id)
+}
+
+// Save mocks base method.
+func (m *MockOrganizationMembershipRepository) Save(ctx context.Context, OrganizationMembership *entity.OrganizationMembership) (*entity.OrganizationMembership, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Save", ctx, OrganizationMembership)
+	ret0, _ := ret[0].(*entity.OrganizationMembership)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Save indicates an expected call of Save.
+func (mr *MockOrganizationMembershipRepositoryMockRecorder) Save(ctx, OrganizationMembership any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockOrganizationMembershipRepository)(nil).Save), ctx, OrganizationMembership)
+}

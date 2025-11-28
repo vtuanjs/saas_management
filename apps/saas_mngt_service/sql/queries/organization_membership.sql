@@ -1,8 +1,8 @@
--- name: GetOrgUserByID :one
-SELECT * FROM org_users WHERE id = $1 LIMIT 1;
+-- name: GetOrganizationMembershipByID :one
+SELECT * FROM organization_memberships WHERE id = $1 LIMIT 1;
 
--- name: SaveOrgUser :one
-INSERT INTO org_users (
+-- name: SaveOrganizationMembership :one
+INSERT INTO organization_memberships (
     id,
     user_id,
     org_id,

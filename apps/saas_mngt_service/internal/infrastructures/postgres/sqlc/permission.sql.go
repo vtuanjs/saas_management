@@ -11,7 +11,7 @@ import (
 )
 
 const getPermissionByID = `-- name: GetPermissionByID :one
-SELECT id, code, name, description, system, org_id, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version FROM permissions WHERE id = $1 LIMIT 1
+SELECT id, name, description, system, org_id, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version FROM permissions WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetPermissionByID(ctx context.Context, id string) (*Permission, error) {
@@ -19,7 +19,6 @@ func (q *Queries) GetPermissionByID(ctx context.Context, id string) (*Permission
 	var i Permission
 	err := row.Scan(
 		&i.ID,
-		&i.Code,
 		&i.Name,
 		&i.Description,
 		&i.System,
@@ -37,7 +36,6 @@ func (q *Queries) GetPermissionByID(ctx context.Context, id string) (*Permission
 const savePermission = `-- name: SavePermission :one
 INSERT INTO permissions (
     id,
-    code,
     name,
     description,
     system,
@@ -49,11 +47,10 @@ INSERT INTO permissions (
     deleted_at
 )
 VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 )
 ON CONFLICT (id) DO UPDATE
 SET
-    code = EXCLUDED.code,
     name = EXCLUDED.name,
     description = EXCLUDED.description,
     system = EXCLUDED.system,
@@ -62,12 +59,11 @@ SET
     updated_by_id = EXCLUDED.updated_by_id,
     deleted_at = EXCLUDED.deleted_at,
     version = permissions.version + 1
-RETURNING id, code, name, description, system, org_id, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version
+RETURNING id, name, description, system, org_id, created_at, updated_at, created_by_id, updated_by_id, deleted_at, version
 `
 
 type SavePermissionParams struct {
 	ID          string
-	Code        string
 	Name        string
 	Description string
 	System      bool
@@ -82,7 +78,6 @@ type SavePermissionParams struct {
 func (q *Queries) SavePermission(ctx context.Context, arg SavePermissionParams) (*Permission, error) {
 	row := q.db.QueryRow(ctx, savePermission,
 		arg.ID,
-		arg.Code,
 		arg.Name,
 		arg.Description,
 		arg.System,
@@ -96,7 +91,6 @@ func (q *Queries) SavePermission(ctx context.Context, arg SavePermissionParams) 
 	var i Permission
 	err := row.Scan(
 		&i.ID,
-		&i.Code,
 		&i.Name,
 		&i.Description,
 		&i.System,
