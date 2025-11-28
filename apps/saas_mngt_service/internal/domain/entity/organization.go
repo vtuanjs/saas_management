@@ -29,8 +29,16 @@ type OrganizationMembership struct {
 }
 
 type OrganizationFeatureFlag struct {
-	ID        string
-	OrgID     string
-	FeatureID string
-	Enable    bool
+	ID            string
+	OrgID         string
+	FeatureFlagID string
+	Enable        bool
+}
+
+type OrganizationFeatureConfig struct {
+	ID               string
+	OrgFeatureFlagID string
+	FeatureConfigID  string
+	OrgID            string
+	Value            string
 }

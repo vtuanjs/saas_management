@@ -16,7 +16,6 @@ const (
 	CustomFieldEntityTypeUnknown CustomFieldEntityType = iota
 	CustomFieldEntityTypeUser
 	CustomFieldEntityTypeOrganization
-	CustomFieldEntityTypeOrgFeatureFlag
 )
 
 type CustomField struct {
