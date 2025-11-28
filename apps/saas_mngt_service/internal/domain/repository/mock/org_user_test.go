@@ -17,56 +17,56 @@ import (
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockOrgUserRepository is a mock of OrgUserRepository interface.
-type MockOrgUserRepository struct {
+// MockOrganizationMembershipRepository is a mock of OrganizationMembershipRepository interface.
+type MockOrganizationMembershipRepository struct {
 	ctrl     *gomock.Controller
-	recorder *MockOrgUserRepositoryMockRecorder
+	recorder *MockOrganizationMembershipRepositoryMockRecorder
 	isgomock struct{}
 }
 
-// MockOrgUserRepositoryMockRecorder is the mock recorder for MockOrgUserRepository.
-type MockOrgUserRepositoryMockRecorder struct {
-	mock *MockOrgUserRepository
+// MockOrganizationMembershipRepositoryMockRecorder is the mock recorder for MockOrganizationMembershipRepository.
+type MockOrganizationMembershipRepositoryMockRecorder struct {
+	mock *MockOrganizationMembershipRepository
 }
 
-// NewMockOrgUserRepository creates a new mock instance.
-func NewMockOrgUserRepository(ctrl *gomock.Controller) *MockOrgUserRepository {
-	mock := &MockOrgUserRepository{ctrl: ctrl}
-	mock.recorder = &MockOrgUserRepositoryMockRecorder{mock}
+// NewMockOrganizationMembershipRepository creates a new mock instance.
+func NewMockOrganizationMembershipRepository(ctrl *gomock.Controller) *MockOrganizationMembershipRepository {
+	mock := &MockOrganizationMembershipRepository{ctrl: ctrl}
+	mock.recorder = &MockOrganizationMembershipRepositoryMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockOrgUserRepository) EXPECT() *MockOrgUserRepositoryMockRecorder {
+func (m *MockOrganizationMembershipRepository) EXPECT() *MockOrganizationMembershipRepositoryMockRecorder {
 	return m.recorder
 }
 
 // FindByID mocks base method.
-func (m *MockOrgUserRepository) FindByID(ctx context.Context, id string) (*entity.OrgUser, error) {
+func (m *MockOrganizationMembershipRepository) FindByID(ctx context.Context, id string) (*entity.OrganizationMembership, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByID", ctx, id)
-	ret0, _ := ret[0].(*entity.OrgUser)
+	ret0, _ := ret[0].(*entity.OrganizationMembership)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindByID indicates an expected call of FindByID.
-func (mr *MockOrgUserRepositoryMockRecorder) FindByID(ctx, id any) *gomock.Call {
+func (mr *MockOrganizationMembershipRepositoryMockRecorder) FindByID(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockOrgUserRepository)(nil).FindByID), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByID", reflect.TypeOf((*MockOrganizationMembershipRepository)(nil).FindByID), ctx, id)
 }
 
 // Save mocks base method.
-func (m *MockOrgUserRepository) Save(ctx context.Context, orgUser *entity.OrgUser) (*entity.OrgUser, error) {
+func (m *MockOrganizationMembershipRepository) Save(ctx context.Context, OrganizationMembership *entity.OrganizationMembership) (*entity.OrganizationMembership, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Save", ctx, orgUser)
-	ret0, _ := ret[0].(*entity.OrgUser)
+	ret := m.ctrl.Call(m, "Save", ctx, OrganizationMembership)
+	ret0, _ := ret[0].(*entity.OrganizationMembership)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Save indicates an expected call of Save.
-func (mr *MockOrgUserRepositoryMockRecorder) Save(ctx, orgUser any) *gomock.Call {
+func (mr *MockOrganizationMembershipRepositoryMockRecorder) Save(ctx, OrganizationMembership any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockOrgUserRepository)(nil).Save), ctx, orgUser)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockOrganizationMembershipRepository)(nil).Save), ctx, OrganizationMembership)
 }

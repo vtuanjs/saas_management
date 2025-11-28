@@ -11,3 +11,8 @@ type OrganizationRepository interface {
 	FindByID(ctx context.Context, id string) (*entity.Organization, error)
 	Save(ctx context.Context, organization *entity.Organization) (*entity.Organization, error)
 }
+
+type OrganizationMembershipRepository interface {
+	FindByID(ctx context.Context, id string) (*entity.OrganizationMembership, error)
+	Save(ctx context.Context, OrganizationMembership *entity.OrganizationMembership) (*entity.OrganizationMembership, error)
+}

@@ -15,3 +15,23 @@ type Role struct {
 	DeletedAt   *time.Time
 	Version     int32
 }
+
+func (r Role) ValidateName() bool {
+	for _, char := range r.Name {
+		if char == ' ' {
+			return false
+		}
+	}
+	return true
+}
+
+type RolePermission struct {
+	ID           string
+	UserID       string
+	RoleID       string
+	PermissionID string
+	OrgID        string
+	Resources    []string
+	CreatedAt    time.Time
+	CreatedByID  string
+}

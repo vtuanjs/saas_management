@@ -7,18 +7,18 @@ import (
 	pkgstring "github.com/vtuanjs/saas_management/packages/go/pkg/pkg_string"
 )
 
-type OrgUserDto struct{}
+type OrganizationMembershipDto struct{}
 
-func NewOrgUserDto() *OrgUserDto {
-	return &OrgUserDto{}
+func NewOrganizationMembershipDto() *OrganizationMembershipDto {
+	return &OrganizationMembershipDto{}
 }
 
-func (m *OrgUserDto) ModelToEntity(model *sqlc.OrgUser) (*entity.OrgUser, error) {
+func (m *OrganizationMembershipDto) ModelToEntity(model *sqlc.OrgUser) (*entity.OrganizationMembership, error) {
 	if model == nil {
 		return nil, pkgerr.NewValidationError("ModelToEntity", "model is nil", nil)
 	}
 
-	return &entity.OrgUser{
+	return &entity.OrganizationMembership{
 		ID:          model.ID,
 		UserID:      model.UserID,
 		OrgID:       model.OrgID,
@@ -30,7 +30,7 @@ func (m *OrgUserDto) ModelToEntity(model *sqlc.OrgUser) (*entity.OrgUser, error)
 		Version:     model.Version,
 	}, nil
 }
-func (m *OrgUserDto) EntityToModel(entity *entity.OrgUser) (*sqlc.OrgUser, error) {
+func (m *OrganizationMembershipDto) EntityToModel(entity *entity.OrganizationMembership) (*sqlc.OrgUser, error) {
 	if entity == nil {
 		return nil, pkgerr.NewValidationError("EntityToModel", "entity is nil", nil)
 	}

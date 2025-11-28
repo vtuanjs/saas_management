@@ -4,7 +4,6 @@ import "time"
 
 type Permission struct {
 	ID          string
-	Code        string
 	Name        string
 	Description string
 	System      bool
@@ -15,4 +14,13 @@ type Permission struct {
 	UpdatedByID string
 	DeletedAt   *time.Time
 	Version     int32
+}
+
+func (p Permission) ValidateName() bool {
+	for _, char := range p.Name {
+		if char == ' ' {
+			return false
+		}
+	}
+	return true
 }

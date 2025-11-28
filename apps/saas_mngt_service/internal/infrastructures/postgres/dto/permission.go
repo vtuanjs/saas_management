@@ -20,7 +20,6 @@ func (m *PermissionDto) ModelToEntity(model *sqlc.Permission) (*entity.Permissio
 
 	return &entity.Permission{
 		ID:          model.ID,
-		Code:        model.Code,
 		Name:        model.Name,
 		Description: model.Description,
 		System:      model.System,
@@ -40,7 +39,6 @@ func (m *PermissionDto) EntityToModel(entity *entity.Permission) (*sqlc.Permissi
 
 	return &sqlc.Permission{
 		ID:          entity.ID,
-		Code:        entity.Code,
 		Name:        entity.Name,
 		Description: entity.Description,
 		System:      entity.System,
