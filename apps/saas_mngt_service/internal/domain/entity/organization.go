@@ -3,42 +3,50 @@ package entity
 import "time"
 
 type Organization struct {
+	Code     string
+	Name     string
+	Logo     *Attachment
+	IsLocked bool
+
 	ID          string
-	Code        string
-	Name        string
-	Logo        *Attachment
-	IsLocked    bool
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	CreatedByID string
 	UpdatedByID string
-	DeletedAt   *time.Time
-	Version     int32
 }
 
 type OrganizationMembership struct {
+	UserID string
+	OrgID  string
+
 	ID          string
-	UserID      string
-	OrgID       string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	CreatedByID string
 	UpdatedByID string
-	DeletedAt   *time.Time
-	Version     int32
 }
 
 type OrganizationFeatureFlag struct {
-	ID            string
 	OrgID         string
 	FeatureFlagID string
 	Enable        bool
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
 }
 
 type OrganizationFeatureConfig struct {
-	ID               string
+	OrgID            string
 	OrgFeatureFlagID string
 	FeatureConfigID  string
-	OrgID            string
 	Value            string
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
 }

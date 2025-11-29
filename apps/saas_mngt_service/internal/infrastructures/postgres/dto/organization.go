@@ -39,8 +39,6 @@ func (m *OrganizationDto) ModelToEntity(model *sqlc.Organization) (*entity.Organ
 		UpdatedAt:   model.UpdatedAt,
 		CreatedByID: pkgstring.DerefString(model.CreatedByID),
 		UpdatedByID: pkgstring.DerefString(model.UpdatedByID),
-		DeletedAt:   model.DeletedAt,
-		Version:     model.Version,
 	}, nil
 }
 func (m *OrganizationDto) EntityToModel(entity *entity.Organization) (*sqlc.Organization, error) {
@@ -67,7 +65,5 @@ func (m *OrganizationDto) EntityToModel(entity *entity.Organization) (*sqlc.Orga
 		UpdatedAt:   entity.UpdatedAt,
 		CreatedByID: pkgstring.PointerString(entity.CreatedByID),
 		UpdatedByID: pkgstring.PointerString(entity.UpdatedByID),
-		DeletedAt:   entity.DeletedAt,
-		Version:     entity.Version,
 	}, nil
 }

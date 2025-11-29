@@ -12,8 +12,6 @@ type Role struct {
 	UpdatedAt   time.Time
 	CreatedByID string
 	UpdatedByID string
-	DeletedAt   *time.Time
-	Version     int32
 }
 
 func (r Role) ValidateName() bool {
@@ -26,12 +24,15 @@ func (r Role) ValidateName() bool {
 }
 
 type RolePermission struct {
-	ID           string
 	UserID       string
 	RoleID       string
 	PermissionID string
 	OrgID        string
 	Resources    []string
-	CreatedAt    time.Time
-	CreatedByID  string
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
 }

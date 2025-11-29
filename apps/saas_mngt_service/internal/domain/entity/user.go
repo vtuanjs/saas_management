@@ -3,7 +3,6 @@ package entity
 import "time"
 
 type User struct {
-	ID                   string
 	Email                string
 	Phone                string
 	FirstName            string
@@ -16,10 +15,8 @@ type User struct {
 	IsActivated          bool
 	IsAdmin              bool
 	IsChangePassRequired bool
-	CreatedAt            time.Time
-	UpdatedAt            time.Time
-	CreatedByID          string
-	UpdatedByID          string
-	DeletedAt            *time.Time
-	Version              int32
+
+	ID        string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

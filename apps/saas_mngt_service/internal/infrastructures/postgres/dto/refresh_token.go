@@ -37,7 +37,6 @@ func (m *RefreshTokenDto) ModelToEntity(model *sqlc.RefreshToken) (*entity.Refre
 		UserID:    model.UserID,
 		CreatedAt: model.CreatedAt,
 		UpdatedAt: model.UpdatedAt,
-		Version:   model.Version,
 	}, nil
 }
 func (m *RefreshTokenDto) EntityToModel(entity *entity.RefreshToken) (*sqlc.RefreshToken, error) {
@@ -63,6 +62,5 @@ func (m *RefreshTokenDto) EntityToModel(entity *entity.RefreshToken) (*sqlc.Refr
 		UserID:    entity.UserID,
 		CreatedAt: entity.CreatedAt,
 		UpdatedAt: entity.UpdatedAt,
-		Version:   entity.Version,
 	}, nil
 }

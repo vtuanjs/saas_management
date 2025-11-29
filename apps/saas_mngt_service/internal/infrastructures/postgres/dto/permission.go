@@ -28,8 +28,6 @@ func (m *PermissionDto) ModelToEntity(model *sqlc.Permission) (*entity.Permissio
 		UpdatedAt:   model.UpdatedAt,
 		CreatedByID: pkgstring.DerefString(model.CreatedByID),
 		UpdatedByID: pkgstring.DerefString(model.UpdatedByID),
-		DeletedAt:   model.DeletedAt,
-		Version:     model.Version,
 	}, nil
 }
 func (m *PermissionDto) EntityToModel(entity *entity.Permission) (*sqlc.Permission, error) {
@@ -47,7 +45,5 @@ func (m *PermissionDto) EntityToModel(entity *entity.Permission) (*sqlc.Permissi
 		UpdatedAt:   entity.UpdatedAt,
 		CreatedByID: pkgstring.PointerString(entity.CreatedByID),
 		UpdatedByID: pkgstring.PointerString(entity.UpdatedByID),
-		DeletedAt:   entity.DeletedAt,
-		Version:     entity.Version,
 	}, nil
 }

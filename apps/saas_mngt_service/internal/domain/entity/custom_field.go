@@ -1,5 +1,7 @@
 package entity
 
+import "time"
+
 type CustomFieldType int
 
 const (
@@ -19,7 +21,6 @@ const (
 )
 
 type CustomField struct {
-	ID          string
 	OrgID       string
 	Name        string
 	Description string
@@ -27,6 +28,12 @@ type CustomField struct {
 	Type        CustomFieldType
 	EntityType  CustomFieldEntityType
 	Options     []string
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
 }
 
 func (c CustomField) ValidateName() bool {
@@ -39,8 +46,13 @@ func (c CustomField) ValidateName() bool {
 }
 
 type CustomFieldValue struct {
-	ID            string
 	CustomFieldID string
 	EntityID      string
 	Value         string
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
 }

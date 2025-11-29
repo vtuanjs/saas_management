@@ -1,11 +1,18 @@
 package entity
 
+import "time"
+
 type FeatureFlag struct {
-	ID          string
 	OrgID       string
 	Name        string
 	Description string
 	Enable      bool
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
 }
 
 func (f FeatureFlag) ValidateName() bool {
@@ -27,9 +34,23 @@ const (
 )
 
 type FeatureConfig struct {
-	ID            string
 	OrgID         string
 	FeatureFlagID string
 	Name          string
 	Type          FeatureFlagConfigType
+
+	ID          string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	CreatedByID string
+	UpdatedByID string
+}
+
+func (f FeatureConfig) ValidateName() bool {
+	for _, char := range f.Name {
+		if char == ' ' {
+			return false
+		}
+	}
+	return true
 }

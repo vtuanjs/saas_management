@@ -28,8 +28,6 @@ func (m *RoleDto) ModelToEntity(model *sqlc.Role) (*entity.Role, error) {
 		UpdatedAt:   model.UpdatedAt,
 		CreatedByID: pkgstring.DerefString(model.CreatedByID),
 		UpdatedByID: pkgstring.DerefString(model.UpdatedByID),
-		DeletedAt:   model.DeletedAt,
-		Version:     model.Version,
 	}, nil
 }
 func (m *RoleDto) EntityToModel(entity *entity.Role) (*sqlc.Role, error) {
@@ -47,7 +45,5 @@ func (m *RoleDto) EntityToModel(entity *entity.Role) (*sqlc.Role, error) {
 		UpdatedAt:   entity.UpdatedAt,
 		CreatedByID: pkgstring.PointerString(entity.CreatedByID),
 		UpdatedByID: pkgstring.PointerString(entity.UpdatedByID),
-		DeletedAt:   entity.DeletedAt,
-		Version:     entity.Version,
 	}, nil
 }

@@ -45,10 +45,6 @@ func (m *UserDto) ModelToEntity(model *sqlc.User) (*entity.User, error) {
 		IsChangePassRequired: model.IsChangePassRequired,
 		CreatedAt:            model.CreatedAt,
 		UpdatedAt:            model.UpdatedAt,
-		CreatedByID:          *model.CreatedByID,
-		UpdatedByID:          *model.UpdatedByID,
-		DeletedAt:            model.DeletedAt,
-		Version:              model.Version,
 	}, nil
 }
 func (m *UserDto) EntityToModel(entity *entity.User) (*sqlc.User, error) {
@@ -80,10 +76,6 @@ func (m *UserDto) EntityToModel(entity *entity.User) (*sqlc.User, error) {
 		IsChangePassRequired: entity.IsChangePassRequired,
 		CreatedAt:            entity.CreatedAt,
 		UpdatedAt:            entity.UpdatedAt,
-		CreatedByID:          pkgstring.PointerString(entity.CreatedByID),
-		UpdatedByID:          pkgstring.PointerString(entity.UpdatedByID),
-		DeletedAt:            entity.DeletedAt,
-		Version:              entity.Version,
 	}, nil
 }
 

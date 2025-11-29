@@ -3,17 +3,16 @@ package entity
 import "time"
 
 type Permission struct {
-	ID          string
 	Name        string
 	Description string
 	System      bool
 	OrgID       string
+
+	ID          string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	CreatedByID string
 	UpdatedByID string
-	DeletedAt   *time.Time
-	Version     int32
 }
 
 func (p Permission) ValidateName() bool {
