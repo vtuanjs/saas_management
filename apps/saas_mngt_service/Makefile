@@ -84,8 +84,8 @@ down:
 	@echo "Stopping..."
 	docker compose down
 
-debug:
-	@echo "Running in debug mode..."
+dev:
+	@echo "Running in dev mode..."
 	DEBUG=true docker compose up saas_mngt_service
 
 # golangci-lint
