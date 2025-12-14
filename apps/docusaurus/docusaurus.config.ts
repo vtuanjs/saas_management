@@ -73,7 +73,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'My Site',
+      title: 'SasS Management',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
